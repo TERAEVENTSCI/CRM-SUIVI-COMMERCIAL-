@@ -184,3 +184,83 @@
         function openDealModal() {
             const select = document.getElementById('d-client-select');
             select.innerHTML = contacts.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
+            if(contacts.length === 0) return alert("Veuillez d'abord créer un contact !");
+            document.getElementById('dealModal').style.display = 'flex';
+        }
+
+        // SAUVEGARDE
+        function saveContact() {
+            const name = document.getElementById('c-name').value;
+            const sector = document.getElementById('c-sector').value;
+            if(!name) return alert("Nom obligatoire");
+            contacts.push({ id: Date.now(), name, sector });
+            closeModals();
+            renderContacts();
+        }
+
+        function saveDeal() {
+            const title = document.getElementById('d-title').value;
+            const client = document.getElementById('d-client-select').value;
+            const price = parseFloat(document.getElementById('d-amount').value);
+            if(!title || !price) return alert("Champs vides");
+            
+            deals.push({ id: Date.now(), title, client, price, stage: 'prospection' });
+            closeModals();
+            renderBoard();
+        }
+
+        // RENDU
+        function renderContacts() {
+            document.getElementById('contact-list').innerHTML = contacts.map(c => `
+                <tr><td><strong>${c.name}</strong></td><td>${c.sector}</td><td>Client</td></tr>
+            `).join('');
+        }
+
+        function renderBoard() {
+            const board = document.getElementById('board');
+            board.innerHTML = stages.map(s => `
+                <div class="column">
+                    <div class="col-header"><span>${s.label}</span> <span>${deals.filter(d => d.stage === s.id).length}</span></div>
+                    <div class="list" ondrop="drop(event, '${s.id}')" ondragover="allowDrop(event)">
+                        ${deals.filter(d => d.stage === s.id).map(d => `
+                            <div class="item" draggable="true" ondragstart="drag(event, ${d.id})">
+                                <h4>${d.title}</h4>
+                                <p><i class="fas fa-building"></i> ${d.client}</p>
+                                <span class="amount">${d.price.toLocaleString()} FCFA</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // DRAG & DROP
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev, id) { ev.dataTransfer.setData("text", id); }
+        function drop(ev, stageId) {
+            ev.preventDefault();
+            const id = ev.dataTransfer.getData("text");
+            const deal = deals.find(d => d.id == id);
+            deal.stage = stageId;
+            renderBoard();
+        }
+
+        function updateDash() {
+            const ca = deals.filter(d => d.stage === 'gagne').reduce((s, d) => s + d.price, 0);
+            document.getElementById('stat-ca').innerText = ca.toLocaleString() + " FCFA";
+            document.getElementById('stat-deals').innerText = deals.filter(d => d.stage !== 'gagne').length;
+            document.getElementById('stat-contacts').innerText = contacts.length;
+        }
+
+        function updateComm() {
+            const wins = deals.filter(d => d.stage === 'gagne');
+            document.getElementById('comm-list').innerHTML = wins.map(d => `
+                <tr><td>${d.title}</td><td>${d.client}</td><td>${d.price.toLocaleString()}</td><td><strong>${(d.price * 0.05).toLocaleString()}</strong></td></tr>
+            `).join('');
+        }
+
+        // Init
+        updateDash();
+    </script>
+</body>
+</html>
