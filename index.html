@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Pro - Gestion Contacts</title>
+    <title>CRM Pro - Pipeline & Deals</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -34,27 +34,31 @@
         .view.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Tableaux & UI */
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
-        th { background: #f8fafc; color: #64748b; }
-
+        /* UI Elements */
+        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .btn { padding: 10px 18px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
 
-        /* Modal (Fenêtre formulaire) */
+        /* Kanban Pipeline */
+        .kanban { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; }
+        .column { background: #e5e7eb; min-width: 280px; border-radius: 10px; flex-shrink: 0; display: flex; flex-direction: column; }
+        .col-header { padding: 15px; font-weight: 700; display: flex; justify-content: space-between; border-radius: 10px 10px 0 0; background: rgba(0,0,0,0.05); }
+        .list { padding: 10px; flex-grow: 1; min-height: 200px; }
+        .item { background: white; padding: 15px; border-radius: 8px; margin-bottom: 12px; cursor: grab; border-left: 5px solid var(--primary); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .item h4 { font-size: 0.9rem; margin-bottom: 5px; }
+        .item p { font-size: 0.75rem; color: #6b7280; font-weight: 600; }
+        .item .amount { color: var(--primary); font-weight: 700; margin-top: 8px; display: block; }
+
+        /* Modal */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center; }
         .modal-content { background: white; padding: 30px; border-radius: 12px; width: 450px; }
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; }
         .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
 
-        /* Kanban */
-        .kanban { display: flex; gap: 20px; overflow-x: auto; }
-        .column { background: #e5e7eb; min-width: 280px; border-radius: 10px; flex-shrink: 0; padding-bottom: 15px; }
-        .item { background: white; padding: 12px; border-radius: 8px; margin: 10px; cursor: grab; border-left: 5px solid var(--primary); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
     </style>
 </head>
 <body>
@@ -72,49 +76,44 @@
     <main class="main">
         <header class="topbar">
             <h2 id="view-title">Dashboard</h2>
-            <div><strong>Admin</strong> <i class="fas fa-circle-user"></i></div>
+            <div><strong>Admin Mode</strong> <i class="fas fa-user-shield"></i></div>
         </header>
 
         <div class="container">
+            <section id="view-dash" class="view active">
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+                    <div class="card"><h3>CA Total Gagné</h3><div id="stat-ca" style="font-size:1.8rem; font-weight:700; color:var(--success)">0 FCFA</div></div>
+                    <div class="card"><h3>Affaires Ouvertes</h3><div id="stat-deals" style="font-size:1.8rem; font-weight:700;">0</div></div>
+                    <div class="card"><h3>Base Contacts</h3><div id="stat-contacts" style="font-size:1.8rem; font-weight:700;">0</div></div>
+                </div>
+            </section>
+
             <section id="view-contacts" class="view">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <h2>Gestion des Contacts</h2>
-                    <button class="btn btn-primary" onclick="toggleModal(true)"><i class="fas fa-plus"></i> Nouveau Contact</button>
+                <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                    <h2>Répertoire Clients</h2>
+                    <button class="btn btn-primary" onclick="openContactModal()"><i class="fas fa-plus"></i> Nouveau Contact</button>
                 </div>
                 <div class="card">
-                    <input type="text" id="searchContact" placeholder="Rechercher un client..." style="width:100%; padding:10px; margin-bottom:15px; border-radius:6px; border:1px solid #ddd;">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Raison Sociale</th>
-                                <th>Type</th>
-                                <th>Secteur</th>
-                                <th>Dernière Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="contact-list">
-                            </tbody>
+                        <thead><tr><th>Entreprise</th><th>Secteur</th><th>Type</th></tr></thead>
+                        <tbody id="contact-list"></tbody>
                     </table>
                 </div>
             </section>
 
-            <section id="view-dash" class="view active">
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-                    <div class="card"><h3>CA Gagné</h3><div id="stat-ca" style="font-size:1.5rem; font-weight:700;">0 FCFA</div></div>
-                    <div class="card"><h3>Total Contacts</h3><div id="stat-contacts" style="font-size:1.5rem; font-weight:700;">0</div></div>
-                    <div class="card"><h3>Affaires en cours</h3><div id="stat-deals" style="font-size:1.5rem; font-weight:700;">0</div></div>
-                </div>
-            </section>
-
             <section id="view-pipe" class="view">
+                <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                    <h2>Suivi des Opportunités</h2>
+                    <button class="btn btn-success" onclick="openDealModal()"><i class="fas fa-handshake"></i> Nouvelle Affaire</button>
+                </div>
                 <div class="kanban" id="board"></div>
             </section>
 
             <section id="view-comm" class="view">
-                <h2>Mes Commissions</h2>
+                <h2>Commissions sur Ventes</h2>
                 <div class="card" style="margin-top:20px;">
                     <table id="comm-table">
-                        <thead><tr><th>Affaire</th><th>Montant</th><th>Commission (5%)</th></tr></thead>
+                        <thead><tr><th>Affaire</th><th>Client</th><th>Vente</th><th>Com (5%)</th></tr></thead>
                         <tbody id="comm-list"></tbody>
                     </table>
                 </div>
@@ -124,39 +123,44 @@
 
     <div class="modal" id="contactModal">
         <div class="modal-content">
-            <h3>Ajouter un Contact</h3>
-            <br>
+            <h3>Nouveau Client</h3><br>
+            <div class="form-group"><label>Nom Entreprise</label><input type="text" id="c-name"></div>
+            <div class="form-group"><label>Secteur</label><input type="text" id="c-sector"></div>
+            <button class="btn btn-primary" onclick="saveContact()" style="width:100%">Enregistrer</button>
+            <button class="btn" onclick="closeModals()" style="width:100%; margin-top:10px; background:#eee">Annuler</button>
+        </div>
+    </div>
+
+    <div class="modal" id="dealModal">
+        <div class="modal-content">
+            <h3>Nouvelle Opportunité</h3><br>
+            <div class="form-group"><label>Objet de l'affaire</label><input type="text" id="d-title" placeholder="Ex: Vente matériel"></div>
             <div class="form-group">
-                <label>Nom de l'entreprise</label>
-                <input type="text" id="c-name" placeholder="Ex: Google">
+                <label>Client (Contact existant)</label>
+                <select id="d-client-select">
+                    </select>
             </div>
-            <div class="form-group">
-                <label>Type</label>
-                <select id="c-type">
-                    <option value="Prospect">Prospect</option>
-                    <option value="Client Actif">Client Actif</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Secteur</label>
-                <input type="text" id="c-sector" placeholder="Ex: Technologie">
-            </div>
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="btn btn-success" onclick="saveContact()" style="flex:1">Enregistrer</button>
-                <button class="btn" onclick="toggleModal(false)" style="background:#eee; flex:1">Annuler</button>
-            </div>
+            <div class="form-group"><label>Montant Estimé (FCFA)</label><input type="number" id="d-amount"></div>
+            <button class="btn btn-success" onclick="saveDeal()" style="width:100%">Créer l'Affaire</button>
+            <button class="btn" onclick="closeModals()" style="width:100%; margin-top:10px; background:#eee">Annuler</button>
         </div>
     </div>
 
     <script>
-        // DONNÉES
+        // BASE DE DONNÉES TEMPORAIRE
         let contacts = [
-            { id: 1, name: "Société Alpha", type: "Client Actif", sector: "Industrie" },
-            { id: 2, name: "Clinique du Sud", type: "Prospect", sector: "Santé" }
+            { id: 1, name: "CMA-CGM", sector: "Transport" },
+            { id: 2, name: "Orange CI", sector: "Télécom" }
         ];
 
         let deals = [
-            { id: 101, title: "Maintenance", client: "Société Alpha", price: 1500000, stage: 'gagne' }
+            { id: 101, title: "Audit Annuel", client: "CMA-CGM", price: 2000000, stage: 'devis' }
+        ];
+
+        const stages = [
+            { id: 'prospection', label: 'Prospection' },
+            { id: 'devis', label: 'Devis envoyé' },
+            { id: 'gagne', label: 'Clos - Gagné' }
         ];
 
         // NAVIGATION
@@ -166,71 +170,17 @@
             document.getElementById('view-' + name).classList.add('active');
             document.getElementById('link-' + name).classList.add('active');
             document.getElementById('view-title').innerText = name.toUpperCase();
+            
             if(name === 'contacts') renderContacts();
             if(name === 'pipe') renderBoard();
             if(name === 'dash') updateDash();
             if(name === 'comm') updateComm();
         }
 
-        // GESTION CONTACTS
-        function toggleModal(show) { document.getElementById('contactModal').style.display = show ? 'flex' : 'none'; }
-
-        function saveContact() {
-            const name = document.getElementById('c-name').value;
-            const type = document.getElementById('c-type').value;
-            const sector = document.getElementById('c-sector').value;
-            if(!name) return alert("Nom requis");
-
-            contacts.push({ id: Date.now(), name, type, sector });
-            toggleModal(false);
-            renderContacts();
-            // Reset champs
-            document.getElementById('c-name').value = '';
-        }
-
-        function renderContacts() {
-            const list = document.getElementById('contact-list');
-            list.innerHTML = contacts.map(c => `
-                <tr>
-                    <td><strong>${c.name}</strong></td>
-                    <td><span style="padding:4px 8px; background:#e0f2fe; border-radius:4px; font-size:0.8rem">${c.type}</span></td>
-                    <td>${c.sector}</td>
-                    <td>N/A</td>
-                </tr>
-            `).join('');
-            document.getElementById('stat-contacts').innerText = contacts.length;
-        }
-
-        // LOGIQUE DASH & COMM (Reprise des étapes précédentes)
-        function updateDash() {
-            const ca = deals.filter(d => d.stage === 'gagne').reduce((s, d) => s + d.price, 0);
-            document.getElementById('stat-ca').innerText = ca.toLocaleString() + " FCFA";
-            document.getElementById('stat-deals').innerText = deals.filter(d => d.stage !== 'gagne').length;
-            document.getElementById('stat-contacts').innerText = contacts.length;
-        }
-
-        function updateComm() {
-            const wins = deals.filter(d => d.stage === 'gagne');
-            document.getElementById('comm-list').innerHTML = wins.map(d => `
-                <tr><td>${d.title}</td><td>${d.price.toLocaleString()}</td><td>${(d.price * 0.05).toLocaleString()} FCFA</td></tr>
-            `).join('');
-        }
-
-        // KANBAN (Simplifié pour cette étape)
-        function renderBoard() {
-            const stages = ['prospection', 'devis', 'gagne'];
-            document.getElementById('board').innerHTML = stages.map(s => `
-                <div class="column">
-                    <div style="padding:15px; font-weight:700; background:#ddd; border-radius:10px 10px 0 0">${s.toUpperCase()}</div>
-                    <div style="min-height:100px">
-                        ${deals.filter(d => d.stage === s).map(d => `<div class="item"><h4>${d.title}</h4><small>${d.client}</small></div>`).join('')}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Initialisation
-        updateDash();
-    </script>
-</body>
-</html>
+        // GESTION MODALS
+        function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+        function openContactModal() { document.getElementById('contactModal').style.display = 'flex'; }
+        
+        function openDealModal() {
+            const select = document.getElementById('d-client-select');
+            select.innerHTML = contacts.map(c => `<option value="${c.name}">${c.name}</option>`).join('');
