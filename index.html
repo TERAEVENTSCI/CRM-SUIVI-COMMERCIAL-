@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Pro - Rapports & Exports</title>
+    <title>CRM Pro Multi-Utilisateurs</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js"></script>
 
     <style>
         :root {
@@ -19,100 +18,109 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { display: flex; height: 100vh; background: var(--bg); color: var(--text); overflow: hidden; }
 
-        /* Menu Latéral */
-        .sidebar { width: 260px; background: var(--sidebar); color: white; display: flex; flex-direction: column; }
+        /* --- PAGE DE LOGIN --- */
+        #login-page { position: fixed; inset: 0; background: var(--sidebar); z-index: 9999; display: flex; justify-content: center; align-items: center; color: white; }
+        .login-box { background: var(--white); padding: 40px; border-radius: 12px; width: 350px; color: var(--text); text-align: center; }
+        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 6px; }
+
+        /* --- LAYOUT --- */
+        .sidebar { width: 260px; background: var(--sidebar); color: white; display: flex; flex-direction: column; transition: 0.3s; }
         .sidebar-header { padding: 25px; font-size: 1.2rem; font-weight: 700; border-bottom: 1px solid #374151; color: var(--success); }
         .nav-links { list-style: none; padding: 20px 0; flex-grow: 1; }
         .nav-links a { display: flex; align-items: center; padding: 12px 25px; color: #9ca3af; text-decoration: none; cursor: pointer; transition: 0.3s; }
         .nav-links a:hover, .nav-links a.active { background: var(--primary); color: white; }
         .nav-links i { margin-right: 15px; width: 20px; }
 
-        /* Contenu Principal */
         .main { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { height: 60px; background: white; display: flex; align-items: center; padding: 0 30px; justify-content: space-between; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .container { padding: 30px; overflow-y: auto; flex-grow: 1; }
 
         .view { display: none; }
-        .view.active { display: block; animation: fadeIn 0.4s; }
+        .view.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Cartes & Tableaux */
+        /* --- UI ELEMENTS --- */
         .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
         .btn { padding: 10px 18px; border-radius: 6px; border: none; cursor: pointer; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
-        .btn-export { background: #475569; color: white; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; font-size: 0.9rem; }
+        th { background: #f8fafc; color: #64748b; }
 
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f8fafc; font-size: 0.85rem; color: #64748b; }
-
-        /* Kanban */
-        .kanban { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; }
+        .kanban { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 15px; }
         .column { background: #e5e7eb; min-width: 280px; border-radius: 10px; flex-shrink: 0; }
         .col-header { padding: 15px; font-weight: 700; background: rgba(0,0,0,0.05); border-radius: 10px 10px 0 0; }
         .item { background: white; padding: 15px; border-radius: 8px; margin: 10px; cursor: grab; border-left: 5px solid var(--primary); }
+        .badge-user { font-size: 0.7rem; background: #eee; padding: 2px 6px; border-radius: 4px; color: #666; margin-top: 5px; display: inline-block; }
 
         /* Modal */
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 100; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 400px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 30px; border-radius: 12px; width: 450px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.85rem; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; }
     </style>
 </head>
 <body>
 
+    <div id="login-page">
+        <div class="login-box">
+            <h2 id="login-logo">SALES CRM</h2>
+            <p style="margin-bottom:20px; color:#666;">Accès Sécurisé</p>
+            <input type="text" id="user-email" placeholder="Email (admin@test.com)">
+            <input type="password" id="user-pw" placeholder="Mot de passe">
+            <button class="btn btn-primary" onclick="login()" style="width:100%; justify-content:center;">Connexion</button>
+        </div>
+    </div>
+
     <nav class="sidebar">
-        <div class="sidebar-header"><i class="fas fa-rocket"></i> SALES CRM</div>
+        <div class="sidebar-header" id="company-name-side">ENTREPRISE CRM</div>
         <ul class="nav-links">
             <li><a onclick="showView('dash')" id="link-dash" class="active"><i class="fas fa-th-large"></i> Dashboard</a></li>
+            <li><a onclick="showView('users')" id="link-users"><i class="fas fa-user-tie"></i> Commerciaux</a></li>
             <li><a onclick="showView('contacts')" id="link-contacts"><i class="fas fa-address-book"></i> Contacts</a></li>
             <li><a onclick="showView('pipe')" id="link-pipe"><i class="fas fa-arrows-left-right-to-line"></i> Pipeline</a></li>
             <li><a onclick="showView('comm')" id="link-comm"><i class="fas fa-wallet"></i> Commissions</a></li>
-            <li><a onclick="showView('reports')" id="link-reports"><i class="fas fa-chart-pie"></i> Rapports</a></li>
+            <li><a onclick="showView('settings')" id="link-settings"><i class="fas fa-cog"></i> Paramètres</a></li>
         </ul>
+        <div style="padding: 20px; border-top: 1px solid #374151;">
+            <button onclick="location.reload()" style="background:none; border:none; color:#ef4444; cursor:pointer;"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+        </div>
     </nav>
 
     <main class="main">
         <header class="topbar">
             <h2 id="view-title">Dashboard</h2>
-            <div><strong>Mode Management</strong> <i class="fas fa-chart-line"></i></div>
+            <div id="user-profile"><strong>Chargement...</strong></div>
         </header>
 
         <div class="container">
-            <section id="view-reports" class="view">
+            <section id="view-users" class="view">
                 <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-                    <h2>Analyses & Rapports</h2>
-                    <button class="btn btn-export" onclick="exportToCSV()"><i class="fas fa-file-csv"></i> Exporter en CSV</button>
+                    <h2>Équipe Commerciale</h2>
+                    <button class="btn btn-primary" onclick="openModal('userModal')">+ Ajouter un Commercial</button>
                 </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div class="card">
-                        <h3>Répartition du Pipeline</h3>
-                        <canvas id="pipelineChart" width="400" height="250"></canvas>
-                    </div>
-                    <div class="card">
-                        <h3>Performance Commerciale</h3>
-                        <table id="report-table">
-                            <thead><tr><th>Mois</th><th>Objectif</th><th>Réalisé</th></tr></thead>
-                            <tbody>
-                                <tr><td>Mars 2026</td><td>10.0M</td><td id="rep-realised">0M</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="card">
+                    <table id="user-table">
+                        <thead><tr><th>Nom</th><th>Email</th><th>Rôle</th><th>Performance</th></tr></thead>
+                        <tbody id="user-list"></tbody>
+                    </table>
                 </div>
             </section>
 
             <section id="view-dash" class="view active">
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
-                    <div class="card"><h3>CA Gagné</h3><div id="stat-ca" style="font-size:1.8rem; font-weight:700; color:var(--success)">0 FCFA</div></div>
-                    <div class="card"><h3>Total Contacts</h3><div id="stat-contacts" style="font-size:1.8rem; font-weight:700;">0</div></div>
-                    <div class="card"><h3>Affaires</h3><div id="stat-deals" style="font-size:1.8rem; font-weight:700;">0</div></div>
+                    <div class="card"><h3>CA Global Gagné</h3><div id="stat-ca" style="font-size:1.8rem; font-weight:700; color:var(--success)">0 FCFA</div></div>
+                    <div class="card"><h3>Affaires Ouvertes</h3><div id="stat-deals" style="font-size:1.8rem; font-weight:700;">0</div></div>
+                    <div class="card"><h3>Effectif Équipe</h3><div id="stat-team" style="font-size:1.8rem; font-weight:700;">0</div></div>
                 </div>
             </section>
 
             <section id="view-contacts" class="view">
                 <button class="btn btn-primary" onclick="openModal('contactModal')" style="margin-bottom:15px;">+ Nouveau Contact</button>
-                <div class="card">
-                    <table><thead><tr><th>Entreprise</th><th>Secteur</th></tr></thead><tbody id="contact-list"></tbody></table>
-                </div>
+                <div class="card"><table><thead><tr><th>Entreprise</th><th>Secteur</th></tr></thead><tbody id="contact-list"></tbody></table></div>
             </section>
 
             <section id="view-pipe" class="view">
@@ -121,37 +129,59 @@
             </section>
 
             <section id="view-comm" class="view">
-                <div class="card">
-                    <table id="comm-table"><thead><tr><th>Affaire</th><th>Client</th><th>Vente</th><th>Com</th></tr></thead><tbody id="comm-list"></tbody></table>
+                <div class="card"><table id="comm-table"><thead><tr><th>Affaire</th><th>Commercial</th><th>Vente HT</th><th>Com</th></tr></thead><tbody id="comm-list"></tbody></table></div>
+            </section>
+
+            <section id="view-settings" class="view">
+                <h2>Configuration CRM</h2>
+                <div class="card" style="margin-top:20px; max-width:500px;">
+                    <div class="form-group"><label>Nom de l'entreprise</label><input type="text" id="set-company" value="Ma Société"></div>
+                    <div class="form-group"><label>Taux de commission (%)</label><input type="number" id="set-rate" value="5"></div>
+                    <button class="btn btn-primary" onclick="saveSettings()">Mettre à jour</button>
                 </div>
             </section>
         </div>
     </main>
 
-    <div class="modal" id="contactModal">
-        <div class="modal-content">
-            <h3>Nouveau Contact</h3><br>
-            <input type="text" id="c-name" placeholder="Nom Entreprise" style="width:100%; padding:10px; margin-bottom:10px;">
-            <button class="btn btn-primary" onclick="saveContact()" style="width:100%">Enregistrer</button>
-            <button class="btn" onclick="closeModals()" style="width:100%; margin-top:5px;">Annuler</button>
-        </div>
-    </div>
+    <div class="modal" id="userModal"><div class="modal-content"><h3>Nouveau Commercial</h3><br>
+        <div class="form-group"><label>Nom complet</label><input type="text" id="u-name"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="u-email"></div>
+        <button class="btn btn-primary" onclick="saveUser()" style="width:100%">Créer le profil</button>
+        <button class="btn" onclick="closeModals()" style="width:100%; margin-top:5px;">Annuler</button>
+    </div></div>
 
-    <div class="modal" id="dealModal">
-        <div class="modal-content">
-            <h3>Nouvelle Affaire</h3><br>
-            <input type="text" id="d-title" placeholder="Objet" style="width:100%; padding:10px; margin-bottom:10px;">
-            <select id="d-client-select" style="width:100%; padding:10px; margin-bottom:10px;"></select>
-            <input type="number" id="d-amount" placeholder="Montant FCFA" style="width:100%; padding:10px; margin-bottom:10px;">
-            <button class="btn btn-success" onclick="saveDeal()" style="width:100%">Créer</button>
-        </div>
-    </div>
+    <div class="modal" id="contactModal"><div class="modal-content"><h3>Nouveau Contact</h3><br>
+        <div class="form-group"><label>Nom Entreprise</label><input type="text" id="c-name"></div>
+        <button class="btn btn-primary" onclick="saveContact()" style="width:100%">Enregistrer</button>
+    </div></div>
+
+    <div class="modal" id="dealModal"><div class="modal-content"><h3>Nouvelle Opportunité</h3><br>
+        <div class="form-group"><label>Objet</label><input type="text" id="d-title"></div>
+        <div class="form-group"><label>Client</label><select id="d-client-select"></select></div>
+        <div class="form-group"><label>Attribuer à (Commercial)</label><select id="d-user-select"></select></div>
+        <div class="form-group"><label>Montant HT</label><input type="number" id="d-amount"></div>
+        <button class="btn btn-success" onclick="saveDeal()" style="width:100%">Créer</button>
+    </div></div>
 
     <script>
-        // DONNÉES
-        let contacts = [{ name: "CMA-CGM" }, { name: "Orange CI" }];
-        let deals = [{ id: 101, title: "Audit IT", client: "CMA-CGM", price: 2000000, stage: 'devis' }];
-        let myChart = null;
+        // DONNÉES CENTRALISÉES
+        let config = { company: "Global Sales", rate: 5 };
+        let salesTeam = [
+            { id: 1, name: "Admin", email: "admin@test.com", role: "Admin" },
+            { id: 2, name: "Moussa S.", email: "moussa@test.com", role: "Commercial" }
+        ];
+        let contacts = [{ name: "CMA-CGM" }];
+        let deals = [{ id: 101, title: "Audit IT", client: "CMA-CGM", user: "Moussa S.", price: 2000000, stage: 'devis' }];
+
+        // AUTHENTIFICATION SIMPLIFIÉE
+        function login() {
+            const email = document.getElementById('user-email').value;
+            if(email) {
+                document.getElementById('login-page').style.display = 'none';
+                document.getElementById('user-profile').innerHTML = `<strong>${email}</strong>`;
+                showView('dash');
+            }
+        }
 
         // NAVIGATION
         function showView(name) {
@@ -161,45 +191,71 @@
             document.getElementById('link-' + name).classList.add('active');
             document.getElementById('view-title').innerText = name.toUpperCase();
             
+            if(name === 'users') renderUsers();
             if(name === 'contacts') renderContacts();
             if(name === 'pipe') renderBoard();
             if(name === 'dash') updateDash();
             if(name === 'comm') updateComm();
-            if(name === 'reports') initReports();
         }
 
         // GESTION MODALS
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModals() { document.querySelectorAll('.modal').forEach(m => m.style.display = 'none'); }
+        
         function openDealModal() {
-            const s = document.getElementById('d-client-select');
-            s.innerHTML = contacts.map(c => `<option>${c.name}</option>`).join('');
+            document.getElementById('d-client-select').innerHTML = contacts.map(c => `<option>${c.name}</option>`).join('');
+            document.getElementById('d-user-select').innerHTML = salesTeam.map(u => `<option>${u.name}</option>`).join('');
             openModal('dealModal');
         }
 
-        // SAVE
+        // ACTIONS SAUVEGARDE
+        function saveUser() {
+            salesTeam.push({ id: Date.now(), name: document.getElementById('u-name').value, email: document.getElementById('u-email').value, role: 'Commercial' });
+            closeModals(); renderUsers();
+        }
         function saveContact() { 
             contacts.push({ name: document.getElementById('c-name').value }); 
             closeModals(); renderContacts(); 
         }
         function saveDeal() {
-            deals.push({ id: Date.now(), title: document.getElementById('d-title').value, client: document.getElementById('d-client-select').value, price: parseFloat(document.getElementById('d-amount').value), stage: 'prospection' });
+            deals.push({ id: Date.now(), title: document.getElementById('d-title').value, client: document.getElementById('d-client-select').value, user: document.getElementById('d-user-select').value, price: parseFloat(document.getElementById('d-amount').value), stage: 'prospection' });
             closeModals(); renderBoard();
         }
+        function saveSettings() {
+            config.company = document.getElementById('set-company').value;
+            config.rate = parseFloat(document.getElementById('set-rate').value);
+            document.getElementById('company-name-side').innerText = config.company;
+            alert("Paramètres enregistrés !");
+        }
 
-        // RENDU
-        function renderContacts() { document.getElementById('contact-list').innerHTML = contacts.map(c => `<tr><td>${c.name}</td><td>Secteur</td></tr>`).join(''); }
+        // RENDUS DYNAMIQUES
+        function renderUsers() {
+            document.getElementById('user-list').innerHTML = salesTeam.map(u => {
+                const userCA = deals.filter(d => d.user === u.name && d.stage === 'gagne').reduce((s,d) => s+d.price, 0);
+                return `<tr><td>${u.name}</td><td>${u.email}</td><td>${u.role}</td><td><b>${userCA.toLocaleString()} FCFA</b></td></tr>`;
+            }).join('');
+        }
+
+        function renderContacts() { document.getElementById('contact-list').innerHTML = contacts.map(c => `<tr><td>${c.name}</td><td>Secteur Gné</td></tr>`).join(''); }
         
         function renderBoard() {
             const stages = [{id:'prospection', l:'Prospection'}, {id:'devis', l:'Devis'}, {id:'gagne', l:'Gagné'}];
             document.getElementById('board').innerHTML = stages.map(s => `
                 <div class="column" ondrop="drop(event, '${s.id}')" ondragover="allowDrop(event)">
-                    <div class="col-header">${s.l} (${deals.filter(d => d.stage === s.id).length})</div>
-                    ${deals.filter(d => d.stage === s.id).map(d => `<div class="item" draggable="true" ondragstart="drag(event, ${d.id})">${d.title}<br><b>${d.price.toLocaleString()}</b></div>`).join('')}
+                    <div class="col-header">${s.l}</div>
+                    ${deals.filter(d => d.stage === s.id).map(d => `
+                        <div class="item" draggable="true" ondragstart="drag(event, ${d.id})">
+                            <h4>${d.title}</h4>
+                            <p>${d.client}</p>
+                            <span class="badge-user">${d.user}</span><br>
+                            <b>${d.price.toLocaleString()} FCFA</b>
+                        </div>
+                    `).join('')}
                 </div>
             `).join('');
         }
 
+        // DRAG & DROP
         function drag(ev, id) { ev.dataTransfer.setData("text", id); }
         function allowDrop(ev) { ev.preventDefault(); }
         function drop(ev, stageId) {
@@ -208,57 +264,19 @@
             renderBoard();
         }
 
-        // RAPPORTS & EXPORT
-        function initReports() {
-            const caGagne = deals.filter(d => d.stage === 'gagne').reduce((s,d) => s + d.price, 0);
-            document.getElementById('rep-realised').innerText = (caGagne / 1000000).toFixed(1) + "M";
-
-            const ctx = document.getElementById('pipelineChart').getContext('2d');
-            if(myChart) myChart.destroy();
-            myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Prospection', 'Devis', 'Gagné'],
-                    datasets: [{
-                        data: [
-                            deals.filter(d => d.stage === 'prospection').length,
-                            deals.filter(d => d.stage === 'devis').length,
-                            deals.filter(d => d.stage === 'gagne').length
-                        ],
-                        backgroundColor: ['#94a3b8', '#f59e0b', '#10b981']
-                    }]
-                }
-            });
-        }
-
-        function exportToCSV() {
-            let csv = "Affaire,Client,Montant,Etape\n";
-            deals.forEach(d => { csv += `${d.title},${d.client},${d.price},${d.stage}\n`; });
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.setAttribute('hidden', '');
-            a.setAttribute('href', url);
-            a.setAttribute('download', 'crm_report.csv');
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
-
         function updateDash() {
             const ca = deals.filter(d => d.stage === 'gagne').reduce((s, d) => s + d.price, 0);
             document.getElementById('stat-ca').innerText = ca.toLocaleString() + " FCFA";
-            document.getElementById('stat-contacts').innerText = contacts.length;
+            document.getElementById('stat-team').innerText = salesTeam.length;
             document.getElementById('stat-deals').innerText = deals.length;
         }
 
         function updateComm() {
             const wins = deals.filter(d => d.stage === 'gagne');
-            document.getElementById('comm-list').innerHTML = wins.map(d => `<tr><td>${d.title}</td><td>${d.client}</td><td>${d.price.toLocaleString()}</td><td>${(d.price * 0.05).toLocaleString()}</td></tr>`).join('');
+            document.getElementById('comm-list').innerHTML = wins.map(d => `
+                <tr><td>${d.title}</td><td>${d.user}</td><td>${d.price.toLocaleString()}</td><td><b>${(d.price * (config.rate/100)).toLocaleString()}</b></td></tr>
+            `).join('');
         }
-
-        // Init
-        updateDash();
     </script>
 </body>
 </html>
