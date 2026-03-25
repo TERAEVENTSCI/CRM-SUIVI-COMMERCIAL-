@@ -200,4 +200,70 @@
             document.getElementById('board').innerHTML = stages.map(s => `
                 <div class="column" ondrop="drop(event, '${s.id}')" ondragover="allowDrop(event)">
                     <div style="padding:15px; font-weight:700; background:#ddd; border-radius:8px 8px 0 0">${s.l}</div>
-                    ${deals.
+                    ${deals.filter(d => d.stage === s.id).map(d => `<div class="item" draggable="true" ondragstart="drag(event, ${d.id})"><b>${d.title}</b><br><small>${d.user}</small><br><span style="color:var(--primary)">${d.price.toLocaleString()}</span></div>`).join('')}
+                </div>
+            `).join('');
+        }
+
+        function drag(ev, id) { ev.dataTransfer.setData("text", id); }
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drop(ev, stageId) {
+            ev.preventDefault();
+            const id = ev.dataTransfer.getData("text");
+            deals.find(d => d.id == id).stage = stageId;
+            renderBoard();
+        }
+
+        function renderReports() {
+            // Leaderboard
+            const sortedTeam = [...team].sort((a,b) => {
+                const caA = deals.filter(d => d.user === a.name && d.stage === 'gagne').reduce((s,d) => s+d.price, 0);
+                const caB = deals.filter(d => d.user === b.name && d.stage === 'gagne').reduce((s,d) => s+d.price, 0);
+                return caB - caA;
+            });
+            document.getElementById('leader-list').innerHTML = sortedTeam.map((u, index) => {
+                const ca = deals.filter(d => d.user === u.name && d.stage === 'gagne').reduce((s,d) => s+d.price, 0);
+                return `<tr><td>${index+1}</td><td>${u.name}</td><td><b>${ca.toLocaleString()} FCFA</b></td></tr>`;
+            }).join('');
+
+            // Chart
+            const ctx = document.getElementById('pipeChart').getContext('2d');
+            if(myChart) myChart.destroy();
+            myChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Prospection', 'Devis', 'Gagné'],
+                    datasets: [{
+                        data: [
+                            deals.filter(d => d.stage === 'prospection').length,
+                            deals.filter(d => d.stage === 'devis').length,
+                            deals.filter(d => d.stage === 'gagne').length
+                        ],
+                        backgroundColor: ['#94a3b8', '#f59e0b', '#10b981']
+                    }]
+                }
+            });
+        }
+
+        function exportData() {
+            let csv = "Affaire;Commercial;Montant;Etape\n";
+            deals.forEach(d => { csv += `${d.title};${d.user};${d.price};${d.stage}\n`; });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rapport_crm_ventes.csv';
+            a.click();
+        }
+
+        function updateDash() {
+            const caTotal = deals.filter(d => d.stage === 'gagne').reduce((s,d) => s+d.price, 0);
+            document.getElementById('st-ca').innerText = caTotal.toLocaleString() + " FCFA";
+            document.getElementById('st-team').innerText = team.length;
+            document.getElementById('st-deals').innerText = deals.length;
+        }
+
+        updateDash();
+    </script>
+</body>
+</html>
