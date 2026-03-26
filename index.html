@@ -227,16 +227,30 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
 const DB='crm_v3',JB_KEY='crm_jb_cfg';
 const DSTG={1:{name:'Prospection',prob:10,color:'#94a3b8'},2:{name:'Qualification',prob:25,color:'#6366f1'},3:{name:'Proposition',prob:50,color:'#f59e0b'},4:{name:'Négociation',prob:75,color:'#8b5cf6'},5:{name:'Gagné',prob:100,color:'#059669'},6:{name:'Perdu',prob:0,color:'#dc2626'}};
 function hp(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0}return'h_'+Math.abs(h).toString(36)}
-function ds(){return{settings:{company:'Mon Entreprise',currency:'FCFA',target:50000000,annualTarget:600000000,commMode:'flat',commTrigger:'signed',bonusRate:2,tiers:[{min:0,max:10000000,rate:5},{min:10000000,max:'INF',rate:7}]},stages:JSON.parse(JSON.stringify(DSTG)),users:[{id:1,name:'Administrateur',login:'superadmin',role:'Super Admin',rate:5,team:'Direction',active:true,pass:hp('Dx#9mK2!vLpQ')},{id:2,name:'Eric',login:'eric.commercial',role:'Commercial',rate:5,team:'Commercial',active:true,pass:hp('Wr$7nJ4@xTbM')}],contacts:[],deals:[],audit:[],commissions:{}}}
+function ds(){return{settings:{company:'Mon Entreprise',currency:'FCFA',target:50000000,annualTarget:600000000,commMode:'flat',commTrigger:'signed',bonusRate:2,tiers:[{min:0,max:10000000,rate:5},{min:10000000,max:'INF',rate:7}]},stages:JSON.parse(JSON.stringify(DSTG)),users:[{id:1,name:'Administrateur',login:'superadmin',role:'Super Admin',rate:5,team:'Direction',active:true,pass:'h_iyug7c'},{id:2,name:'Eric',login:'eric.commercial',role:'Commercial',rate:5,team:'Commercial',active:true,pass:'h_po7rwg'}],contacts:[],deals:[],audit:[],commissions:{}}}
 let S=JSON.parse(localStorage.getItem(DB))||ds(),CU=null,cP=null,cM=null;
 /* ── Migration : garantit que les 2 comptes système sont toujours présents ── */
 (function migrateUsers(){
   const sys=[
-    {id:1,name:'Administrateur',login:'superadmin',role:'Super Admin',rate:5,team:'Direction',active:true,pass:hp('Dx#9mK2!vLpQ')},
-    {id:2,name:'Eric',login:'eric.commercial',role:'Commercial',rate:5,team:'Commercial',active:true,pass:hp('Wr$7nJ4@xTbM')}
+    {id:1,name:'Administrateur',login:'superadmin',role:'Super Admin',rate:5,team:'Direction',active:true,pass:'h_iyug7c'},
+    {id:2,name:'Eric',login:'eric.commercial',role:'Commercial',rate:5,team:'Commercial',active:true,pass:'h_po7rwg'}
   ];
-  sys.forEach(su=>{const idx=S.users.findIndex(u=>u.id===su.id);if(idx===-1)S.users.push(su);else{S.users[idx].login=su.login;S.users[idx].pass=su.pass;S.users[idx].role=su.role;S.users[idx].active=true;}});
-  /* Supprimer l'ancien compte 'admin' s'il existe encore */
+  sys.forEach(su=>{
+    const idx=S.users.findIndex(u=>u.id===su.id);
+    if(idx===-1){S.users.push(su);}
+    else{
+      /* Mettre à jour login/role/active mais NE PAS écraser le mot de passe
+         si l'utilisateur l'a déjà personnalisé (hash différent du défaut) */
+      S.users[idx].login=su.login;
+      S.users[idx].role=su.role;
+      S.users[idx].active=true;
+      /* Réinitialiser le hash seulement s'il est corrompu ou absent */
+      if(!S.users[idx].pass||S.users[idx].pass==='h_ykyk3n'||S.users[idx].pass==='h_mkjfta'){
+        S.users[idx].pass=su.pass;
+      }
+    }
+  });
+  /* Supprimer l'ancien compte admin si présent */
   S.users=S.users.filter(u=>!(u.login==='admin'&&u.id===1));
   try{localStorage.setItem(DB,JSON.stringify(S))}catch(e){}
 })();
