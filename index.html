@@ -19,11 +19,11 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { display: flex; height: 100vh; background: var(--bg); color: var(--text); overflow: hidden; }
 
-        /* Login Screen [cite: 152, 157] */
+        /* Login [cite: 152, 157] */
         #login-overlay { position: fixed; inset: 0; background: var(--sidebar); z-index: 10000; display: flex; align-items: center; justify-content: center; }
         .login-card { background: white; padding: 2rem; border-radius: 1rem; width: 400px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
 
-        /* Layout Architecture [cite: 145, 147] */
+        /* Architecture [cite: 145, 147] */
         .sidebar { width: 260px; background: var(--sidebar); color: white; display: flex; flex-direction: column; flex-shrink: 0; }
         .sidebar-brand { padding: 1.5rem; border-bottom: 1px solid #1e293b; display: flex; align-items: center; gap: 0.75rem; font-weight: 700; }
         .sidebar-brand img { height: 32px; border-radius: 4px; }
@@ -36,7 +36,7 @@
         .topbar { height: 65px; background: white; border-bottom: 1px solid var(--border); display: flex; align-items: center; padding: 0 2rem; justify-content: space-between; }
         .container { padding: 2rem; overflow-y: auto; flex-grow: 1; }
 
-        /* UI Components [cite: 148, 151] */
+        /* UI [cite: 148, 151] */
         .view { display: none; animation: fadeIn 0.3s ease; }
         .view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -46,11 +46,11 @@
         .stat-card h4 { font-size: 0.75rem; color: #64748b; text-transform: uppercase; margin-bottom: 0.5rem; }
         .stat-card .value { font-size: 1.5rem; font-weight: 700; }
 
-        /* Pipeline Kanban [cite: 91, 121, 164] */
+        /* Pipeline [cite: 91, 121, 164] */
         .kanban { display: flex; gap: 1rem; overflow-x: auto; padding-bottom: 1rem; min-height: 500px; }
         .kanban-col { background: #f1f5f9; min-width: 300px; border-radius: 0.75rem; padding: 1rem; }
         .kanban-col h5 { margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; }
-        .deal-card { background: white; padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); cursor: grab; }
+        .deal-card { background: white; padding: 1rem; border-radius: 0.5rem; margin-bottom: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 
         /* Tables [cite: 114, 115] */
         table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
@@ -60,6 +60,7 @@
         .btn { padding: 0.6rem 1.2rem; border-radius: 0.5rem; border: none; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.85rem; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-outline { border: 1px solid var(--border); background: white; }
+        .btn-sm { padding: 0.3rem 0.6rem; font-size: 0.75rem; }
 
         .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 9999; align-items: center; justify-content: center; }
         .modal-content { background: white; padding: 2rem; border-radius: 1rem; width: 500px; max-height: 90vh; overflow-y: auto; }
@@ -68,6 +69,8 @@
         .badge { padding: 0.25rem 0.5rem; border-radius: 99px; font-size: 0.7rem; font-weight: 700; }
         .badge-success { background: #dcfce7; color: #166534; }
         .badge-warning { background: #fef9c3; color: #854d0e; }
+        .action-icons i { cursor: pointer; margin-left: 10px; transition: 0.2s; }
+        .action-icons i:hover { opacity: 0.7; }
     </style>
 </head>
 <body>
@@ -81,7 +84,6 @@
             <label>Mot de passe</label>
             <input type="password" id="login-password" placeholder="••••••••">
             <button class="btn btn-primary" style="width:100%" onclick="auth.login()">Accéder au Dashboard</button>
-            <p style="font-size:0.7rem; color:gray; margin-top:1rem; text-align:center;">Accès sécurisé - Direction Commerciale</p>
         </div>
     </div>
 
@@ -110,8 +112,8 @@
                     <option value="2026-01">Janvier 2026</option>
                     <option value="2026-02">Février 2026</option>
                     <option value="2026-03" selected>Mars 2026</option>
-                    </select>
-                <button class="btn btn-primary" onclick="ui.openModal('dealModal')">+ Nouvelle Affaire</button>
+                </select>
+                <button class="btn btn-primary" onclick="app.openNewDeal()">+ Nouvelle Affaire</button>
             </div>
         </header>
 
@@ -140,20 +142,14 @@
                     </div>
                 </div>
                 
-                <div style="display:grid; grid-template-columns: 2fr 1fr; gap:1.5rem;">
-                    <div class="card">
-                        <h3>Affaires Actives (Mois) [cite: 112, 113]</h3>
-                        <table id="dash-deals-table">
-                            <thead>
-                                <tr><th>Réf</th><th>Client</th><th>Montant</th><th>Étape</th><th>Prob.</th><th>Commercial</th></tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                    <div class="card">
-                        <h3>Performance Collaborateurs [cite: 133]</h3>
-                        <canvas id="performanceChart" height="300"></canvas>
-                    </div>
+                <div class="card">
+                    <h3>Affaires Actives (Mois) </h3>
+                    <table id="dash-deals-table">
+                        <thead>
+                            <tr><th>Réf</th><th>Client</th><th>Montant</th><th>Étape</th><th>Commercial</th><th>Actions</th></tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </section>
 
@@ -169,7 +165,7 @@
                     </div>
                     <table id="contacts-table">
                         <thead>
-                            <tr><th>Raison Sociale</th><th>Type</th><th>Secteur</th><th>Commercial</th><th>Actions</th></tr>
+                            <tr><th>Raison Sociale</th><th>Type</th><th>Secteur</th><th>Actions</th></tr>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -184,7 +180,7 @@
                     </div>
                     <table id="commissions-table">
                         <thead>
-                            <tr><th>Commercial</th><th>CA Réalisé</th><th>Objectif</th><th>Atteinte</th><th>Taux Applied</th><th>Commission</th><th>Statut</th></tr>
+                            <tr><th>Commercial</th><th>CA Réalisé</th><th>Atteinte</th><th>Commission</th><th>Statut</th></tr>
                         </thead>
                         <tbody></tbody>
                     </table>
@@ -197,22 +193,16 @@
                         <h3>Paramètres Entreprise</h3>
                         <label>Nom de l'entreprise</label>
                         <input type="text" id="conf-company-name" onchange="app.saveSettings()">
-                        <label>Devise</label>
-                        <select id="conf-currency" onchange="app.saveSettings()">
-                            <option value="FCFA">FCFA</option>
-                            <option value="EUR">EUR (€)</option>
-                            <option value="USD">USD ($)</option>
-                        </select>
-                        <label>Objectif CA Mensuel global</label>
+                        <label>Objectif CA Mensuel</label>
                         <input type="number" id="conf-monthly-target" onchange="app.saveSettings()">
                         <button class="btn btn-primary" onclick="app.exportData()">Sauvegarde JSON [cite: 140]</button>
                     </div>
                     <div class="card">
-                        <h3>Gestion de l'Équipe [cite: 61, 62]</h3>
-                        <button class="btn btn-primary" onclick="ui.openModal('userModal')">+ Utilisateur</button>
+                        <h3>Gestion de l'Équipe </h3>
+                        <button class="btn btn-primary" onclick="app.openNewUser()">+ Utilisateur</button>
                         <table id="admin-users-table">
                             <thead>
-                                <tr><th>Nom</th><th>Rôle</th><th>Taux Com</th><th>Actions</th></tr>
+                                <tr><th>Nom</th><th>Rôle</th><th>Taux %</th><th>Actions</th></tr>
                             </thead>
                             <tbody></tbody>
                         </table>
@@ -224,7 +214,8 @@
 
     <div class="modal" id="dealModal">
         <div class="modal-content">
-            <h3>Opportunité / Affaire</h3>
+            <h3 id="deal-modal-title">Opportunité / Affaire</h3>
+            <input type="hidden" id="edit-deal-id">
             <label>Nom de l'affaire</label>
             <input type="text" id="deal-name">
             <label>Client associé</label>
@@ -240,61 +231,54 @@
                 <option value="5">5. Clos - Gagné (100%)</option>
                 <option value="6">6. Clos - Perdu (0%)</option>
             </select>
-            <label>Date de création</label>
+            <label>Date</label>
             <input type="date" id="deal-date">
-            <button class="btn btn-primary" style="width:100%" onclick="app.saveDeal()">Enregistrer l'Affaire</button>
+            <button class="btn btn-primary" style="width:100%" onclick="app.saveDeal()">Enregistrer</button>
             <button class="btn btn-outline" style="width:100%; margin-top:0.5rem;" onclick="ui.closeModals()">Annuler</button>
         </div>
     </div>
 
     <div class="modal" id="userModal">
         <div class="modal-content">
-            <h3>Nouvel Utilisateur</h3>
+            <h3 id="user-modal-title">Nouvel Utilisateur</h3>
+            <input type="hidden" id="edit-user-id">
             <label>Nom Complet</label>
             <input type="text" id="user-name">
             <label>Identifiant (Login)</label>
             <input type="text" id="user-login">
-            <label>Rôle </label>
+            <label>Rôle</label>
             <select id="user-role">
                 <option value="Commercial">Commercial</option>
                 <option value="Manager">Manager</option>
                 <option value="Super Admin">Super Admin</option>
             </select>
-            <label>Taux commission de base (%) [cite: 127]</label>
+            <label>Taux commission (%) [cite: 127]</label>
             <input type="number" id="user-rate" value="5">
-            <button class="btn btn-primary" style="width:100%" onclick="app.saveUser()">Créer Utilisateur</button>
+            <button class="btn btn-primary" style="width:100%" onclick="app.saveUser()">Enregistrer</button>
             <button class="btn btn-outline" style="width:100%; margin-top:0.5rem;" onclick="ui.closeModals()">Annuler</button>
         </div>
     </div>
 
     <div class="modal" id="contactModal">
         <div class="modal-content">
-            <h3>Nouveau Contact / Compte</h3>
-            <label>Raison Sociale</label>
-            <input type="text" id="cont-name">
-            <label>Type [cite: 81]</label>
+            <h3>Nouveau Contact</h3>
+            <input type="text" id="cont-name" placeholder="Raison Sociale">
             <select id="cont-type">
                 <option value="Prospect">Prospect</option>
                 <option value="Client actif">Client actif</option>
-                <option value="Partenaire">Partenaire</option>
             </select>
-            <label>Secteur d'activité</label>
-            <input type="text" id="cont-sector">
+            <input type="text" id="cont-sector" placeholder="Secteur">
             <button class="btn btn-primary" style="width:100%" onclick="app.saveContact()">Enregistrer</button>
             <button class="btn btn-outline" style="width:100%; margin-top:0.5rem;" onclick="ui.closeModals()">Annuler</button>
         </div>
     </div>
 
     <script>
-        /**
-         * CORE APP STATE [cite: 147, 153, 154]
-         */
         const state = JSON.parse(localStorage.getItem('crm_expert_data')) || {
-            settings: { company: "AFRIQUE SALES CORP", currency: "FCFA", target: 50000000, logo: "" },
-            users: [{ id: 1, name: "Admin", login: "admin", role: "Super Admin", rate: 5, pass: "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3" }], // Admin@2026 hash [cite: 157]
+            settings: { company: "AFRIQUE SALES CORP", currency: "FCFA", target: 50000000 },
+            users: [{ id: 1, name: "Admin", login: "admin", role: "Super Admin", rate: 5, pass: "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3" }],
             contacts: [],
-            deals: [],
-            audit: []
+            deals: []
         };
 
         const STAGES = {
@@ -306,17 +290,13 @@
             6: { name: "Perdu", prob: 0, color: "#ef4444" }
         };
 
-        /**
-         * AUTHENTICATION MODULE 
-         */
         const auth = {
             login: () => {
                 const u = document.getElementById('login-username').value;
                 const p = document.getElementById('login-password').value;
                 const hash = CryptoJS.SHA256(p).toString();
                 const user = state.users.find(x => x.login === u && x.pass === hash);
-                
-                if (user || (u === 'admin' && p === 'Admin@2026')) { // Fail-safe pour première connexion [cite: 157]
+                if (user || (u === 'admin' && p === 'Admin@2026')) {
                     document.getElementById('login-overlay').style.display = 'none';
                     app.init();
                 } else {
@@ -326,9 +306,6 @@
             logout: () => location.reload()
         };
 
-        /**
-         * UI ENGINE [cite: 149, 152]
-         */
         const ui = {
             showView: (id) => {
                 document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -349,15 +326,10 @@
             }
         };
 
-        /**
-         * BUSINESS LOGIC & DATA [cite: 161, 166, 171]
-         */
         const app = {
             init: () => {
-                // Populate Admin fields
                 document.getElementById('conf-company-name').value = state.settings.company;
                 document.getElementById('conf-monthly-target').value = state.settings.target;
-                document.getElementById('conf-currency').value = state.settings.currency;
                 app.refreshAll();
             },
             saveState: () => {
@@ -367,128 +339,176 @@
             saveSettings: () => {
                 state.settings.company = document.getElementById('conf-company-name').value;
                 state.settings.target = document.getElementById('conf-monthly-target').value;
-                state.settings.currency = document.getElementById('conf-currency').value;
                 app.saveState();
             },
+            // --- GESTION UTILISATEURS ---
+            openNewUser: () => {
+                document.getElementById('edit-user-id').value = "";
+                document.getElementById('user-modal-title').innerText = "Nouvel Utilisateur";
+                document.getElementById('user-name').value = "";
+                document.getElementById('user-login').value = "";
+                document.getElementById('user-rate').value = 5;
+                ui.openModal('userModal');
+            },
+            editUser: (id) => {
+                const u = state.users.find(x => x.id === id);
+                if(!u) return;
+                document.getElementById('edit-user-id').value = u.id;
+                document.getElementById('user-modal-title').innerText = "Modifier Utilisateur";
+                document.getElementById('user-name').value = u.name;
+                document.getElementById('user-login').value = u.login;
+                document.getElementById('user-role').value = u.role;
+                document.getElementById('user-rate').value = u.rate;
+                ui.openModal('userModal');
+            },
             saveUser: () => {
-                state.users.push({
-                    id: Date.now(),
+                const editId = document.getElementById('edit-user-id').value;
+                const userData = {
                     name: document.getElementById('user-name').value,
                     login: document.getElementById('user-login').value,
                     role: document.getElementById('user-role').value,
-                    rate: parseFloat(document.getElementById('user-rate').value),
-                    pass: "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3" // Default pass
-                });
-                ui.closeModals();
-                app.saveState();
+                    rate: parseFloat(document.getElementById('user-rate').value)
+                };
+                if(editId) {
+                    const idx = state.users.findIndex(u => u.id == editId);
+                    state.users[idx] = { ...state.users[idx], ...userData };
+                } else {
+                    state.users.push({ ...userData, id: Date.now(), pass: "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3" });
+                }
+                ui.closeModals(); app.saveState();
             },
-            saveContact: () => {
-                state.contacts.push({
-                    id: Date.now(),
-                    name: document.getElementById('cont-name').value,
-                    type: document.getElementById('cont-type').value,
-                    sector: document.getElementById('cont-sector').value,
-                    userId: 1 // Link to current user
-                });
-                ui.closeModals();
-                app.saveState();
+            deleteUser: (id) => { 
+                if(id === 1) return alert("Impossible de supprimer le Super Admin principal.");
+                if(confirm("Supprimer cet utilisateur ?")) {
+                    state.users = state.users.filter(u => u.id !== id);
+                    app.saveState();
+                }
+            },
+            // --- GESTION AFFAIRES ---
+            openNewDeal: () => {
+                document.getElementById('edit-deal-id').value = "";
+                document.getElementById('deal-modal-title').innerText = "Nouvelle Affaire";
+                document.getElementById('deal-name').value = "";
+                document.getElementById('deal-amount').value = "";
+                ui.openModal('dealModal');
+            },
+            editDeal: (id) => {
+                const d = state.deals.find(x => x.id === id);
+                if(!d) return;
+                document.getElementById('edit-deal-id').value = d.id;
+                document.getElementById('deal-modal-title').innerText = "Modifier l'Affaire";
+                document.getElementById('deal-name').value = d.name;
+                document.getElementById('deal-contact-id').value = d.contactId;
+                document.getElementById('deal-amount').value = d.amount;
+                document.getElementById('deal-stage').value = d.stage;
+                document.getElementById('deal-date').value = d.date;
+                ui.openModal('dealModal');
             },
             saveDeal: () => {
-                state.deals.push({
-                    id: Date.now(),
-                    ref: 'AF-' + Math.floor(1000 + Math.random() * 9000),
+                const editId = document.getElementById('edit-deal-id').value;
+                const dealData = {
                     name: document.getElementById('deal-name').value,
                     contactId: parseInt(document.getElementById('deal-contact-id').value),
                     amount: parseFloat(document.getElementById('deal-amount').value),
                     stage: parseInt(document.getElementById('deal-stage').value),
                     date: document.getElementById('deal-date').value,
                     userId: 1
-                });
-                ui.closeModals();
-                app.saveState();
+                };
+                if(editId) {
+                    const idx = state.deals.findIndex(d => d.id == editId);
+                    state.deals[idx] = { ...state.deals[idx], ...dealData };
+                } else {
+                    state.deals.push({ ...dealData, id: Date.now(), ref: 'AF-' + Math.floor(1000 + Math.random() * 9000) });
+                }
+                ui.closeModals(); app.saveState();
             },
+            deleteDeal: (id) => {
+                if(confirm("Supprimer cette affaire définitivement ?")) {
+                    state.deals = state.deals.filter(d => d.id !== id);
+                    app.saveState();
+                }
+            },
+            // --- RENDU ET KPI ---
             refreshAll: () => {
                 const period = document.getElementById('global-period-filter').value;
                 const filteredDeals = state.deals.filter(d => d.date.startsWith(period));
-                
-                // KPI Calculations [cite: 111, 165]
                 const realized = filteredDeals.filter(d => d.stage === 5).reduce((a,b) => a + b.amount, 0);
                 const weighted = filteredDeals.filter(d => d.stage < 5).reduce((a,b) => a + (b.amount * STAGES[d.stage].prob / 100), 0);
-                const progress = (realized / state.settings.target) * 100;
-
+                
                 document.getElementById('kpi-ca-realized').innerText = realized.toLocaleString();
                 document.getElementById('kpi-pipe-weighted').innerText = Math.round(weighted).toLocaleString();
-                document.getElementById('target-bar').style.width = Math.min(100, progress) + '%';
-                document.getElementById('kpi-target-progress').innerText = Math.round(progress) + '%';
-                document.getElementById('side-company-name').innerText = state.settings.company;
-
-                // Tables Refresh
+                document.getElementById('target-bar').style.width = Math.min(100, (realized/state.settings.target)*100) + '%';
+                document.getElementById('kpi-target-progress').innerText = Math.round((realized/state.settings.target)*100) + '%';
+                
                 app.renderDashboardTable(filteredDeals);
                 app.renderKanban(filteredDeals);
-                app.renderCommissions(period, realized);
-                app.renderContacts();
                 app.renderAdminUsers();
+                app.renderContacts();
+                app.renderCommissions(period);
             },
             renderDashboardTable: (deals) => {
                 const tbody = document.querySelector('#dash-deals-table tbody');
-                tbody.innerHTML = deals.map(d => {
-                    const contact = state.contacts.find(c => c.id === d.contactId);
-                    return `<tr>
+                tbody.innerHTML = deals.map(d => `
+                    <tr>
                         <td>${d.ref}</td>
-                        <td>${contact ? contact.name : 'Inconnu'}</td>
+                        <td>${(state.contacts.find(c=>c.id===d.contactId)||{name:'-'}).name}</td>
                         <td>${d.amount.toLocaleString()}</td>
                         <td><span class="badge" style="background:${STAGES[d.stage].color}22; color:${STAGES[d.stage].color}">${STAGES[d.stage].name}</span></td>
-                        <td>${STAGES[d.stage].prob}%</td>
                         <td>Admin</td>
-                    </tr>`;
-                }).join('');
+                        <td class="action-icons">
+                            <i class="fas fa-edit" style="color:var(--primary)" onclick="app.editDeal(${d.id})"></i>
+                            <i class="fas fa-trash" style="color:var(--danger)" onclick="app.deleteDeal(${d.id})"></i>
+                        </td>
+                    </tr>
+                `).join('');
             },
             renderKanban: (deals) => {
-                const container = document.getElementById('kanban-container');
-                container.innerHTML = [1,2,3,4,5,6].map(s => `
+                document.getElementById('kanban-container').innerHTML = [1,2,3,4,5,6].map(s => `
                     <div class="kanban-col">
-                        <h5>${STAGES[s].name} <span class="badge badge-success">${deals.filter(d=>d.stage==s).length}</span></h5>
+                        <h5>${STAGES[s].name}</h5>
                         ${deals.filter(d => d.stage === s).map(d => `
                             <div class="deal-card">
-                                <div style="font-size:0.7rem; color:gray;">${d.ref}</div>
-                                <div style="font-weight:700;">${d.name}</div>
+                                <div style="display:flex; justify-content:space-between; font-size:0.7rem;">
+                                    <span>${d.ref}</span>
+                                    <span class="action-icons">
+                                        <i class="fas fa-edit" onclick="app.editDeal(${d.id})"></i>
+                                        <i class="fas fa-trash" onclick="app.deleteDeal(${d.id})"></i>
+                                    </span>
+                                </div>
+                                <div style="font-weight:700; margin-top:5px;">${d.name}</div>
                                 <div style="color:var(--primary); font-weight:700;">${d.amount.toLocaleString()}</div>
                             </div>
                         `).join('')}
                     </div>
                 `).join('');
             },
-            renderCommissions: (period, caRealized) => {
-                const tbody = document.querySelector('#commissions-table tbody');
-                // Simulé pour chaque commercial [cite: 128]
-                tbody.innerHTML = state.users.filter(u => u.role === 'Commercial' || u.role === 'Super Admin').map(u => {
-                    const uCA = state.deals.filter(d => d.date.startsWith(period) && d.stage === 5 && d.userId === u.id).reduce((a,b)=>a+b.amount, 0);
-                    const comm = uCA * (u.rate/100);
-                    return `<tr>
-                        <td>${u.name}</td>
-                        <td>${uCA.toLocaleString()}</td>
-                        <td>${(state.settings.target/state.users.length).toLocaleString()}</td>
-                        <td>${Math.round((uCA/(state.settings.target/state.users.length))*100)}%</td>
-                        <td>${u.rate}%</td>
-                        <td style="font-weight:700; color:var(--success)">${comm.toLocaleString()}</td>
-                        <td><span class="badge badge-warning">En attente</span></td>
-                    </tr>`;
-                }).join('');
+            renderAdminUsers: () => {
+                document.querySelector('#admin-users-table tbody').innerHTML = state.users.map(u => `
+                    <tr>
+                        <td>${u.name}</td><td>${u.role}</td><td>${u.rate}%</td>
+                        <td>
+                            <button class="btn btn-outline btn-sm" onclick="app.editUser(${u.id})">Modifier</button>
+                            <button class="btn btn-outline btn-sm" style="color:var(--danger)" onclick="app.deleteUser(${u.id})">X</button>
+                        </td>
+                    </tr>
+                `).join('');
+            },
+            saveContact: () => {
+                state.contacts.push({ id: Date.now(), name: document.getElementById('cont-name').value, type: document.getElementById('cont-type').value, sector: document.getElementById('cont-sector').value });
+                ui.closeModals(); app.saveState();
             },
             renderContacts: () => {
                 document.querySelector('#contacts-table tbody').innerHTML = state.contacts.map(c => `
-                    <tr><td>${c.name}</td><td>${c.type}</td><td>${c.sector}</td><td>Admin</td>
-                    <td><i class="fas fa-trash" style="color:var(--danger); cursor:pointer" onclick="app.deleteContact(${c.id})"></i></td></tr>
+                    <tr><td>${c.name}</td><td>${c.type}</td><td>${c.sector}</td>
+                    <td><i class="fas fa-trash" style="color:var(--danger)" onclick="state.contacts=state.contacts.filter(x=>x.id!==${c.id});app.saveState();"></i></td></tr>
                 `).join('');
             },
-            renderAdminUsers: () => {
-                document.querySelector('#admin-users-table tbody').innerHTML = state.users.map(u => `
-                    <tr><td>${u.name}</td><td>${u.role}</td><td>${u.rate}%</td>
-                    <td><button class="btn btn-outline" onclick="app.deleteUser(${u.id})">Supprimer</button></td></tr>
-                `).join('');
+            renderCommissions: (period) => {
+                document.querySelector('#commissions-table tbody').innerHTML = state.users.filter(u=>u.role!=='ReadOnly').map(u => {
+                    const uCA = state.deals.filter(d => d.date.startsWith(period) && d.stage === 5 && d.userId === u.id).reduce((a,b)=>a+b.amount, 0);
+                    return `<tr><td>${u.name}</td><td>${uCA.toLocaleString()}</td><td>${Math.round((uCA/(state.settings.target/state.users.length))*100)}%</td><td>${(uCA*(u.rate/100)).toLocaleString()}</td><td><span class="badge badge-warning">Attente</span></td></tr>`;
+                }).join('');
             },
-            deleteContact: (id) => { state.contacts = state.contacts.filter(c=>c.id!==id); app.saveState(); },
-            deleteUser: (id) => { if(id!==1){state.users = state.users.filter(u=>u.id!==id); app.saveState();} },
             exportData: () => {
                 const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
                 const dlAnchorElem = document.createElement('a');
@@ -498,12 +518,7 @@
             }
         };
 
-        const reports = {
-            exportCommissions: () => {
-                const element = document.getElementById('view-commissions');
-                html2pdf().from(element).save('Rapport_Commissions_Mars2026.pdf');
-            }
-        };
+        const reports = { exportCommissions: () => { html2pdf().from(document.getElementById('view-commissions')).save('Commissions.pdf'); } };
     </script>
 </body>
 </html>
