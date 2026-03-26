@@ -177,9 +177,6 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
 
 <div id="tab-comm" class="admin-panel" style="display:none"><div class="card"><div class="card-header"><h3>Règles</h3></div><div class="form-group"><label>Mode</label><select class="form-control" id="cfg-cmode"><option value="flat">Taux fixe</option><option value="tiered">Paliers</option></select></div><div id="cfg-tiers-sec" style="display:none"><div class="card-header"><h3>Paliers</h3><button class="btn btn-outline btn-sm" onclick="Admin.addTier()"><i class="fas fa-plus"></i></button></div><div id="cfg-tiers"></div></div><div class="form-group"><label>Déclenchement</label><select class="form-control" id="cfg-ctrig"><option value="signed">Devis signé</option><option value="paid">Paiement reçu</option></select></div><div class="form-group"><label>Bonus dépassement (%)</label><input type="number" class="form-control" id="cfg-bonus" value="2"></div><button class="btn btn-primary" onclick="Admin.saveComm()"><i class="fas fa-check"></i> Enregistrer</button></div></div>
 
-<!-- ══════════════════════════════════════════ -->
-<!-- SYNC TAB — JSONBIN.IO CONFIGURATION      -->
-<!-- ══════════════════════════════════════════ -->
 <div id="tab-sync" class="admin-panel" style="display:none">
 <div class="sync-setup-card" id="sync-card"><i class="fas fa-cloud" style="font-size:2.5rem;color:var(--text-muted);margin-bottom:.75rem"></i><h3 id="sync-title">Synchronisation non configurée</h3><p style="font-size:.85rem;color:var(--text-secondary)" id="sync-desc">Configurez JSONBin.io pour synchroniser les données entre les utilisateurs en temps réel.</p></div>
 
@@ -212,7 +209,6 @@ select.form-control{appearance:none;background-image:url("data:image/svg+xml,%3C
 </section>
 </div></main>
 
-<!-- MODALS -->
 <div class="modal-overlay" id="m-deal"><div class="modal-box"><div class="modal-header"><h3 id="m-deal-t">Nouvelle affaire</h3><button class="btn btn-ghost btn-icon" onclick="Modal.close('m-deal')"><i class="fas fa-xmark"></i></button></div><div class="modal-body"><input type="hidden" id="d-id"><div class="form-group"><label>Nom *</label><input type="text" class="form-control" id="d-name"></div><div class="form-row"><div class="form-group"><label>Client *</label><select class="form-control" id="d-ct"></select></div><div class="form-group"><label>Interlocuteur</label><input type="text" class="form-control" id="d-inter"></div></div><div class="form-row"><div class="form-group"><label>Montant *</label><input type="number" class="form-control" id="d-amt"></div><div class="form-group"><label>Étape</label><select class="form-control" id="d-stg"></select></div></div><div class="form-row"><div class="form-group"><label>Commercial</label><select class="form-control" id="d-usr"></select></div><div class="form-group"><label>Source</label><select class="form-control" id="d-src"><option>Prospection</option><option>Réseau</option><option>Site web</option><option>Salon</option><option>Appel entrant</option><option>Autre</option></select></div></div><div class="form-row"><div class="form-group"><label>Date devis</label><input type="date" class="form-control" id="d-date"></div><div class="form-group"><label>Clôture prévue</label><input type="date" class="form-control" id="d-cdate"></div></div><div class="form-group"><label>Prochaine action</label><input type="text" class="form-control" id="d-next"></div><div class="form-group" id="d-loss-grp" style="display:none"><label>Motif perte *</label><textarea class="form-control" id="d-loss"></textarea></div><div class="form-group"><label>Notes</label><textarea class="form-control" id="d-notes"></textarea></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="Modal.close('m-deal')">Annuler</button><button class="btn btn-primary" onclick="Deals.save()"><i class="fas fa-check"></i> Enregistrer</button></div></div></div>
 
 <div class="modal-overlay" id="m-ct"><div class="modal-box"><div class="modal-header"><h3 id="m-ct-t">Nouveau contact</h3><button class="btn btn-ghost btn-icon" onclick="Modal.close('m-ct')"><i class="fas fa-xmark"></i></button></div><div class="modal-body"><input type="hidden" id="c-id"><div class="form-group"><label>Raison sociale *</label><input type="text" class="form-control" id="c-name"></div><div class="form-row"><div class="form-group"><label>Type</label><select class="form-control" id="c-type"><option>Prospect</option><option>Client actif</option><option>Client inactif</option><option>Partenaire</option></select></div><div class="form-group"><label>Secteur</label><input type="text" class="form-control" id="c-sec"></div></div><div class="form-group"><label>Interlocuteur</label><input type="text" class="form-control" id="c-person"></div><div class="form-row"><div class="form-group"><label>Téléphone</label><input type="tel" class="form-control" id="c-tel"></div><div class="form-group"><label>Email</label><input type="email" class="form-control" id="c-email"></div></div><div class="form-group"><label>Adresse</label><input type="text" class="form-control" id="c-addr"></div><div class="form-group"><label>Commercial</label><select class="form-control" id="c-usr"></select></div><div class="form-group"><label>Notes</label><textarea class="form-control" id="c-notes"></textarea></div></div><div class="modal-footer"><button class="btn btn-outline" onclick="Modal.close('m-ct')">Annuler</button><button class="btn btn-primary" onclick="Contacts.save()"><i class="fas fa-check"></i> Enregistrer</button></div></div></div>
@@ -229,12 +225,12 @@ const DSTG={1:{name:'Prospection',prob:10,color:'#94a3b8'},2:{name:'Qualificatio
 function hp(p){let h=0;for(let i=0;i<p.length;i++){h=((h<<5)-h)+p.charCodeAt(i);h|=0}return'h_'+Math.abs(h).toString(36)}
 /* ═══════════════════════════════════════════════
    COMPTES SYSTÈME — hashes pré-calculés stables
-   Admin2026Secure -> h_iyug7c
-   Eric2026Secure  -> h_po7rwg
+   Admin2026Secure -> calculé via hp()
+   Eric2026Secure  -> calculé via hp()
    ═══════════════════════════════════════════════ */
 const SYS_ACCOUNTS=[
-  {id:1,name:'Administrateur',login:'superadmin',role:'Super Admin',rate:5,team:'Direction',active:true,pass:'h_iyug7c'},
-  {id:2,name:'Eric',login:'eric.commercial',role:'Commercial',rate:5,team:'Commercial',active:true,pass:'h_po7rwg'}
+  {id:1,name:'Administrateur',login:'superadmin',role:'Super Admin',rate:5,team:'Direction',active:true,pass:hp('Admin2026Secure')},
+  {id:2,name:'Eric',login:'eric.commercial',role:'Commercial',rate:5,team:'Commercial',active:true,pass:hp('Eric2026Secure')}
 ];
 function ds(){
   return{
@@ -354,7 +350,7 @@ const Sync={
       if(e.message.includes('401')||e.message.includes('403'))
         Toast.s('X-Master-Key invalide ou accès refusé','error');
       else if(e.message.includes('404'))
-        Toast.s('BIN ID introuvable — vérifiez l'ID','error');
+        Toast.s('BIN ID introuvable — vérifiez l\'ID','error');
       else
         Toast.s('Connexion échouée : '+e.message,'error');
       this.ui('offline');
