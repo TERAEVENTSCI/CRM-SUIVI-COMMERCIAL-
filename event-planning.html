@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Notre Espace — Tera events | Salle événementielle Cocody 2 Plateaux Abidjan</title><meta name="description" content="Espace événementiel Tera events à Cocody 2 Plateaux, Abidjan. Jusqu'à 100 personnes. Location seule ou formule tout inclus avec décoration, traiteur et coordination.">
+<title>Event Planning — Tera events | Organisation d'événements à Abidjan</title><meta name="description" content="Espace événementiel Tera events à Cocody 2 Plateaux, Abidjan. Jusqu'à 100 personnes. Location seule ou formule tout inclus avec décoration, traiteur et coordination.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>/* TERA EVENTS — Design System v2
    Palette extraite du logo :
@@ -81,7 +81,10 @@ section{padding:clamp(4rem,8vw,8rem) 0}
 .nav-links a{font-size:0.7rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.78);transition:color var(--t);white-space:nowrap}
 .nav-links a:hover,.nav-links a.active{color:var(--blanc)}
 .nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
-.nav-toggle span{width:22px;height:1px;background:var(--blanc);display:block;transition:var(--t)}
+.nav-toggle span{width:22px;height:1px;background:var(--blanc);display:block;transition:all .3s ease}
+.nav.open .nav-toggle span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.nav.open .nav-toggle span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav.open .nav-toggle span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 @media(max-width:960px){
   .nav-links{display:none;flex-direction:column;position:fixed;inset:0;background:var(--b1);justify-content:center;align-items:center;gap:2.5rem;z-index:150;padding:2rem}
   .nav-toggle{display:flex}
@@ -236,7 +239,7 @@ footer{background:var(--b1);color:rgba(255,255,255,0.7);padding:4.5rem 0 2rem}
           <li style="display:flex;gap:.8rem;align-items:center;font-size:.85rem;color:var(--gris)"><span style="width:5px;height:5px;background:var(--or);border-radius:50%;flex-shrink:0"></span>Son, vidéo, éclairage inclus</li>
           <li style="display:flex;gap:.8rem;align-items:center;font-size:.85rem;color:var(--gris)"><span style="width:5px;height:5px;background:var(--or);border-radius:50%;flex-shrink:0"></span>Location seule ou tout inclus</li>
         </ul>
-        <a href="#notre-espace-detail" class="btn btn-outline-b">Voir notre espace</a>
+        <a href="#notre-espace-detail" class="btn btn-outline-b">Event planning</a>
       </div>
 
       <!-- Colonne 2 : Votre lieu -->
@@ -484,8 +487,33 @@ footer{background:var(--b1);color:rgba(255,255,255,0.7);padding:4.5rem 0 2rem}
 var _nav = document.getElementById('nav');
 if(_nav){
   window.addEventListener('scroll', function(){ _nav.classList.toggle('scrolled', window.scrollY > 60); });
+
   var _tog = document.getElementById('nav-toggle');
-  if(_tog) _tog.addEventListener('click', function(){ _nav.classList.toggle('open'); });
+
+  // Ouvrir / fermer via le bouton hamburger
+  if(_tog) _tog.addEventListener('click', function(){
+    _nav.classList.toggle('open');
+  });
+
+  // Fermer en cliquant sur un lien du menu
+  var _links = _nav.querySelectorAll('.nav-links a');
+  _links.forEach(function(link){
+    link.addEventListener('click', function(){
+      _nav.classList.remove('open');
+    });
+  });
+
+  // Fermer en cliquant en dehors du menu
+  document.addEventListener('click', function(e){
+    if(_nav.classList.contains('open') && !_nav.contains(e.target)){
+      _nav.classList.remove('open');
+    }
+  });
+
+  // Fermer avec la touche Echap
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') _nav.classList.remove('open');
+  });
 }
 document.body.classList.add('js-ready');
 function activateReveals(){
