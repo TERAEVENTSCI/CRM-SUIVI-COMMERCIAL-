@@ -3,6 +3,252 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Traiteur — Tera events | Menus Cocktails & Repas Assis · Abidjan</title>
+<meta name="description" content="Service traiteur Tera events à Abidjan. Cocktails dînatoires et repas assis pour vos événements corporate et privés. À partir de 30 personnes.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & TOKENS ──────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --b1:#0E1847;--b2:#152060;--b3:#1C2B78;
+  --b-pale:#EEF0F8;--b-tint:#DDE1F3;
+  --or:#C4916E;--or2:#D9AF93;--or3:#EDD5C2;--or4:#8B5E3C;
+  --blanc:#FFFFFF;--off:#FAFAF8;
+  --gris:#6B7080;--gris2:#9CA4B0;
+  --bor-or:rgba(196,145,110,0.22);--bor-or-h:rgba(196,145,110,0.55);
+  --bor-b:rgba(255,255,255,0.12);
+  --r:2px;--r2:6px;--r3:12px;
+  --t:0.30s cubic-bezier(.4,0,.2,1);
+  --shadow:0 24px 64px rgba(14,24,71,0.16);
+}
+html{scroll-behavior:smooth}
+body{background:var(--blanc);color:var(--b2);font-family:'DM Sans',sans-serif;font-weight:300;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Cormorant Garamond',serif;font-weight:400;line-height:1.1;color:var(--b2)}
+a{text-decoration:none}
+img{display:block;max-width:100%}
+.container{max-width:1180px;margin:0 auto;padding:0 clamp(1.5rem,5vw,3.5rem)}
+section{padding:clamp(4rem,8vw,8rem) 0}
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:.9rem}
+.eyebrow-w{font-family:'DM Sans',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.26em;text-transform:uppercase;color:var(--or3);display:block;margin-bottom:.9rem}
+
+/* ── BOUTONS ──────────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:.55rem;font-family:'DM Sans',sans-serif;font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;padding:.9rem 2rem;border-radius:var(--r);transition:all var(--t);cursor:pointer;border:1px solid transparent;white-space:nowrap}
+.btn-or{background:var(--or);color:var(--blanc);border-color:var(--or)}
+.btn-or:hover{background:var(--or2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(196,145,110,0.35)}
+.btn-outline-w{background:transparent;color:var(--blanc);border-color:rgba(255,255,255,0.45)}
+.btn-outline-w:hover{border-color:var(--or);color:var(--or3)}
+.btn-outline-b{background:transparent;color:var(--b2);border-color:var(--bor-or-h)}
+.btn-outline-b:hover{border-color:var(--or);color:var(--or4)}
+
+/* ── NAV ──────────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.2rem clamp(1.5rem,5vw,3.5rem);display:flex;align-items:center;justify-content:space-between;transition:all var(--t);background:rgba(14,24,71,0.88);backdrop-filter:blur(12px)}
+.nav.scrolled{background:rgba(14,24,71,0.98);padding:0.8rem clamp(1.5rem,5vw,3.5rem);border-bottom:1px solid var(--bor-b)}
+.nav-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0}
+.nav-logo-img{height:50px;width:auto;display:block}
+.nav.scrolled .nav-logo-img{height:42px}
+.nav-links{display:flex;align-items:center;gap:1.8rem;list-style:none;margin:0;padding:0}
+.nav-links a{font-size:.7rem;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,0.78);transition:color var(--t);white-space:nowrap}
+.nav-links a:hover,.nav-links a.active{color:var(--blanc)}
+.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
+.nav-toggle span{width:22px;height:1px;background:var(--blanc);display:block;transition:all .3s ease}
+.nav.open .nav-toggle span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.nav.open .nav-toggle span:nth-child(2){opacity:0;transform:scaleX(0)}
+.nav.open .nav-toggle span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+@media(max-width:960px){
+  .nav-links{display:none;flex-direction:column;position:fixed;inset:0;background:var(--b1);justify-content:center;align-items:center;gap:2.5rem;z-index:150;padding:2rem}
+  .nav-toggle{display:flex}
+  .nav.open .nav-links{display:flex}
+  .nav.open .nav-links a{font-size:1.1rem;color:rgba(255,255,255,0.8)}
+  .nav.open .nav-links .btn{display:inline-flex;margin-top:.5rem}
+}
+
+/* ── REVEAL ───────────────────────────────────────── */
+.reveal{opacity:1;transform:none}
+.js-ready .reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.js-ready .reveal.in{opacity:1;transform:none}
+.js-ready .d1{transition-delay:.1s}.js-ready .d2{transition-delay:.2s}.js-ready .d3{transition-delay:.3s}
+
+/* ── HERO — PLEIN ÉCRAN ÉDITORIAL ────────────────── */
+.hero-traiteur{position:relative;height:100vh;min-height:650px;display:flex;align-items:flex-end;overflow:hidden;background:var(--b1)}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.55;display:block}
+.hero-gradient{position:absolute;inset:0;background:linear-gradient(to top,rgba(14,24,71,0.92) 0%,rgba(14,24,71,0.4) 50%,rgba(14,24,71,0.15) 100%)}
+.hero-content{position:relative;z-index:2;width:100%;padding-bottom:clamp(5rem,10vh,9rem)}
+.hero-label{display:inline-flex;align-items:center;gap:.7rem;font-family:'DM Sans',sans-serif;font-size:.62rem;font-weight:500;letter-spacing:.25em;text-transform:uppercase;color:var(--or);margin-bottom:1.5rem}
+.hero-label::before{content:'';width:28px;height:1px;background:var(--or)}
+.hero-h1{font-size:clamp(3.5rem,8vw,8rem);font-weight:300;letter-spacing:-.04em;color:var(--blanc);line-height:.95;margin-bottom:1.2rem}
+.hero-h1 em{font-style:italic;color:var(--or3)}
+.hero-sub{font-size:1rem;color:rgba(255,255,255,.65);max-width:480px;line-height:1.7;margin-bottom:2.5rem}
+.hero-pills{display:flex;flex-wrap:wrap;gap:.75rem}
+.hero-pill{display:inline-flex;align-items:center;gap:.5rem;font-family:'DM Sans',sans-serif;font-size:.68rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.2);padding:.45rem 1.1rem;border-radius:40px;backdrop-filter:blur(8px)}
+.hero-pill span{width:5px;height:5px;background:var(--or);border-radius:50%;flex-shrink:0}
+.hero-scroll{position:absolute;right:3rem;bottom:3rem;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px}
+.hero-scroll-line{width:1px;height:50px;background:linear-gradient(to bottom,var(--or),transparent);animation:pulse-line 2s ease-in-out infinite}
+.hero-scroll-label{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.4);writing-mode:vertical-lr}
+@keyframes pulse-line{0%,100%{opacity:1;transform:scaleY(1)}50%{opacity:.4;transform:scaleY(.6)}}
+
+/* ── BANDE INCLUS ─────────────────────────────────── */
+.inclus-bande{background:var(--b2);padding:2rem 0}
+.inclus-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:0}
+.inclus-cell{display:flex;align-items:center;gap:.9rem;padding:1rem 2.5rem;border-right:1px solid rgba(255,255,255,.1)}
+.inclus-cell:last-child{border-right:none}
+.inclus-cell svg{opacity:.7;flex-shrink:0}
+.inclus-text strong{display:block;font-size:.82rem;font-weight:500;color:var(--blanc);line-height:1}
+.inclus-text span{font-size:.72rem;color:rgba(255,255,255,.5)}
+@media(max-width:760px){.inclus-cell{border-right:none;border-bottom:1px solid rgba(255,255,255,.1);width:100%;padding:1rem 1.5rem}.inclus-cell:last-child{border-bottom:none}}
+
+/* ── GALERIE MOSAÏQUE ─────────────────────────────── */
+.galerie-mosaic{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:240px 240px;gap:3px}
+.gm-item{overflow:hidden;position:relative}
+.gm-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s ease,opacity .8s ease;opacity:.85}
+.gm-item:hover img{transform:scale(1.05);opacity:1}
+.gm-1{grid-column:1/6;grid-row:1/3}
+.gm-2{grid-column:6/10;grid-row:1/2}
+.gm-3{grid-column:10/13;grid-row:1/2}
+.gm-4{grid-column:6/9;grid-row:2/3}
+.gm-5{grid-column:9/13;grid-row:2/3}
+@media(max-width:760px){
+  .galerie-mosaic{grid-template-columns:1fr 1fr;grid-template-rows:180px 180px 180px;gap:3px}
+  .gm-1,.gm-2,.gm-3,.gm-4,.gm-5{grid-column:auto;grid-row:auto}
+}
+
+/* ── ONGLETS DE FORMAT ────────────────────────────── */
+.format-tabs{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bor-or);border-radius:var(--r3);overflow:hidden;margin-bottom:4rem}
+.format-tab{padding:2.5rem 2.5rem;cursor:pointer;background:var(--blanc);border-right:1px solid var(--bor-or);transition:all var(--t);position:relative}
+.format-tab:last-child{border-right:none;background:var(--b-pale)}
+.format-tab.active,.format-tab:hover{background:var(--b2)}
+.format-tab.active *,.format-tab:hover *{color:var(--blanc) !important}
+.format-tab.active .ft-price,.format-tab:hover .ft-price{color:var(--or3) !important}
+.format-tab.active .ft-dot,.format-tab:hover .ft-dot{background:var(--or3) !important}
+.ft-eyebrow{font-size:.6rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:var(--or);display:flex;align-items:center;gap:.5rem;margin-bottom:.8rem}
+.ft-dot{width:5px;height:5px;background:var(--or);border-radius:50%}
+.ft-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.5vw,2.2rem);color:var(--b2);margin-bottom:.5rem;line-height:1.1}
+.ft-desc{font-size:.84rem;color:var(--gris);line-height:1.65;margin-bottom:1rem}
+.ft-price{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400;color:var(--or4)}
+.ft-price em{font-style:normal;font-size:.72rem;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--gris2);margin-left:.3rem}
+@media(max-width:640px){.format-tabs{grid-template-columns:1fr}.format-tab{border-right:none;border-bottom:1px solid var(--bor-or)}.format-tab:last-child{border-bottom:none}}
+
+/* ── MENUS — LAYOUT ÉDITORIAL ─────────────────────── */
+.menus-section{display:none}
+.menus-section.active{display:block}
+
+.menu-editorial{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--bor-or);border:1px solid var(--bor-or);border-radius:var(--r3);overflow:hidden;margin-bottom:1.5rem}
+.me-card{background:var(--blanc);display:flex;flex-direction:column;transition:background var(--t)}
+.me-card:hover{background:var(--b-pale)}
+.me-card.featured{background:var(--b2)}
+.me-card.featured:hover{background:var(--b3)}
+.me-head{padding:2rem 2rem 1.5rem;border-bottom:1px solid var(--bor-or);position:relative}
+.me-card.featured .me-head{border-bottom-color:rgba(255,255,255,.1)}
+.me-badge{font-size:.58rem;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--blanc);background:var(--or);padding:.2rem .7rem;margin-bottom:.7rem;display:inline-block}
+.me-name{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:400;color:var(--b2);line-height:1}
+.me-card.featured .me-name{color:var(--blanc)}
+.me-choix{font-size:.72rem;color:var(--gris2);margin-top:.3rem;font-style:italic}
+.me-card.featured .me-choix{color:rgba(255,255,255,.55)}
+.me-body{padding:1.5rem 2rem 2rem;flex:1}
+.me-cat{font-size:.58rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--or);display:block;margin:.9rem 0 .4rem}
+.me-card.featured .me-cat{color:var(--or3)}
+.me-list{list-style:none;display:flex;flex-direction:column;gap:.3rem}
+.me-list li{font-size:.8rem;color:var(--gris);line-height:1.5;padding-left:.9rem;position:relative}
+.me-list li::before{content:'·';position:absolute;left:0;color:var(--or)}
+.me-card.featured .me-list li{color:rgba(255,255,255,.65)}
+.me-card.featured .me-list li::before{color:var(--or3)}
+.me-note{font-size:.72rem;font-style:italic;color:var(--gris2);margin-top:.3rem}
+@media(max-width:760px){.menu-editorial{grid-template-columns:1fr}}
+
+/* ── BLOC REPAS ASSIS — STRUCTURE ─────────────────── */
+.repas-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bor-or);border:1px solid var(--bor-or);border-radius:var(--r3);overflow:hidden;margin-bottom:1.5rem}
+.rp-card{background:var(--blanc);padding:2rem;transition:background var(--t)}
+.rp-card:hover{background:var(--b-pale)}
+.rp-card.featured{background:var(--b2)}
+.rp-card.featured:hover{background:var(--b3)}
+.rp-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;color:var(--b2);margin-bottom:.3rem;line-height:1}
+.rp-card.featured .rp-name{color:var(--blanc)}
+.rp-choix{font-size:.72rem;color:var(--gris2);font-style:italic;margin-bottom:1.2rem}
+.rp-card.featured .rp-choix{color:rgba(255,255,255,.5)}
+.rp-row{display:flex;justify-content:space-between;align-items:center;font-size:.84rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)}
+.rp-card.featured .rp-row{border-bottom-color:rgba(255,255,255,.1)}
+.rp-row:last-child{border-bottom:none}
+.rp-row span:first-child{color:var(--gris)}
+.rp-card.featured .rp-row span:first-child{color:rgba(255,255,255,.55)}
+.rp-row span:last-child{font-weight:500;color:var(--b2)}
+.rp-card.featured .rp-row span:last-child{color:rgba(255,255,255,.9)}
+@media(max-width:760px){.repas-grid{grid-template-columns:1fr}}
+
+/* ── BLOC GALA ────────────────────────────────────── */
+.gala-block{border:1px solid var(--or);border-radius:var(--r3);overflow:hidden}
+.gala-header{background:var(--b1);padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.gala-left{}
+.gala-badge{font-size:.6rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--or);border:1px solid var(--bor-or);padding:.25rem .8rem;display:inline-block;margin-bottom:.7rem}
+.gala-name{font-family:'Cormorant Garamond',serif;font-size:2.5rem;font-weight:300;color:var(--blanc);line-height:1}
+.gala-sub{font-size:.78rem;color:rgba(255,255,255,.45);margin-top:.3rem;font-style:italic}
+.gala-body{background:var(--off);padding:2rem 2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.gala-col-title{font-size:.6rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:.8rem}
+.gala-services{display:flex;flex-direction:column;gap:.3rem}
+.gala-svc-row{display:flex;justify-content:space-between;font-size:.84rem;padding:.35rem 0;border-bottom:1px solid var(--bor-or)}
+.gala-svc-row:last-child{border-bottom:none}
+.gala-svc-row span:first-child{color:var(--gris)}
+.gala-svc-row span:last-child{font-weight:500;color:var(--b2)}
+.gala-aperitifs{list-style:none;display:flex;flex-direction:column;gap:.4rem}
+.gala-aperitifs li{font-size:.82rem;color:var(--gris);padding-left:1rem;position:relative;line-height:1.5}
+.gala-aperitifs li::before{content:'';width:4px;height:4px;background:var(--or);border-radius:50%;position:absolute;left:0;top:8px}
+@media(max-width:640px){.gala-body{grid-template-columns:1fr;gap:2rem}}
+
+/* ── NOTE MENUS DU CHEF ───────────────────────────── */
+.chef-note{display:flex;gap:1.2rem;align-items:flex-start;padding:1.2rem 1.8rem;border-left:2px solid var(--or);background:rgba(196,145,110,.04);border-radius:0 var(--r2) var(--r2) 0;margin-top:1.5rem}
+.chef-note p{font-size:.85rem;color:var(--gris);line-height:1.7}
+.chef-note strong{color:var(--b2)}
+
+/* ── SERVICE INDÉP ────────────────────────────────── */
+.indep-block{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--bor-or);border-radius:var(--r3);overflow:hidden;margin-top:clamp(3rem,6vw,5rem)}
+.indep-text{padding:clamp(2.5rem,5vw,4rem);border-right:1px solid var(--bor-or)}
+.indep-img{position:relative;overflow:hidden;min-height:360px}
+.indep-img img{width:100%;height:100%;object-fit:cover;display:block;opacity:.9;transition:opacity var(--t)}
+.indep-block:hover .indep-img img{opacity:1}
+.indep-list{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin:1.5rem 0 2rem}
+.indep-list li{display:flex;gap:.9rem;align-items:flex-start;font-size:.88rem;color:var(--gris)}
+.indep-list li::before{content:'';width:5px;height:5px;background:var(--or);border-radius:50%;flex-shrink:0;margin-top:8px}
+@media(max-width:700px){.indep-block{grid-template-columns:1fr}.indep-text{border-right:none;border-bottom:1px solid var(--bor-or)}.indep-img{min-height:260px}}
+
+/* ── CTA FINAL ────────────────────────────────────── */
+.cta-finale{background:var(--b2);border-radius:var(--r3);padding:clamp(3.5rem,7vw,6rem);text-align:center;position:relative;overflow:hidden}
+.cta-finale::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:500px;background:radial-gradient(circle,rgba(196,145,110,.09) 0%,transparent 65%);pointer-events:none}
+.cta-finale h2{color:var(--blanc);font-size:clamp(2.2rem,4.5vw,4rem);margin-bottom:1rem;position:relative;z-index:1}
+.cta-finale h2 em{font-style:italic;color:var(--or3)}
+.cta-finale p{color:rgba(255,255,255,.6);max-width:440px;margin:0 auto 2.5rem;line-height:1.72;font-size:.95rem;position:relative;z-index:1}
+.cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+
+/* ── FOOTER ───────────────────────────────────────── */
+footer{background:var(--b1);color:rgba(255,255,255,0.7);padding:4.5rem 0 2rem}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:3rem;padding-bottom:3rem;border-bottom:1px solid var(--bor-b);margin-bottom:2rem}
+.footer-logo-name{display:none}
+.footer-logo-tag{font-size:.58rem;letter-spacing:.28em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:1.2rem}
+.footer-desc{font-size:.82rem;line-height:1.7;margin-bottom:1.5rem;color:rgba(255,255,255,.55)}
+.footer-socials{display:flex;gap:.65rem}
+.footer-socials a{width:32px;height:32px;border:1px solid var(--bor-b);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.55);transition:all var(--t)}
+.footer-socials a:hover{border-color:var(--or);color:var(--or)}
+.footer-col-title{font-size:.62rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--or);margin-bottom:1.1rem;display:block}
+.footer-links{list-style:none;display:flex;flex-direction:column;gap:.55rem}
+.footer-links a{font-size:.82rem;color:rgba(255,255,255,.5);transition:color var(--t)}
+.footer-links a:hover{color:var(--blanc)}
+.footer-ci{display:flex;gap:.65rem;align-items:flex-start;margin-bottom:.65rem}
+.footer-ci-text{font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.55}
+.footer-ci-text a{color:rgba(255,255,255,.5)}
+.footer-ci-text a:hover{color:var(--or)}
+.footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.footer-bottom p,.footer-bottom a{font-size:.72rem;color:rgba(255,255,255,.35);text-decoration:none}
+.footer-bottom a:hover{color:var(--or)}
+@media(max-width:900px){.footer-grid{grid-template-columns:1fr 1fr;gap:2rem}}
+@media(max-width:550px){.footer-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Traiteur — Tera events | Menus Cocktails Dînatoires & Repas Assis Abidjan</title>
 <meta name="description" content="Service traiteur Tera events à Abidjan. Cocktails dînatoires et repas assis pour vos événements corporate et privés. À partir de 30 personnes. Formules sur mesure.">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
@@ -186,360 +432,319 @@ footer{background:var(--b1);color:rgba(255,255,255,0.7);padding:4.5rem 0 2rem}
   </ul>
   <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
 </nav>
-<!-- HERO -->
-<div class="ph">
-  <img src="https://static.wixstatic.com/media/d3492f_bdc3bde26d804c58a3e25d05c775dd3b~mv2.jpeg" alt="Traiteur Tera events" class="ph-bg-img">
-  <div class="ph-bg-overlay"></div>
-  <div class="container" style="position:relative;z-index:3">
-    <div class="ph-tag reveal"><span style="width:5px;height:5px;background:var(--or);border-radius:50%"></span>Service Traiteur · Tera events</div>
-    <h1 class="reveal">Une gastronomie<br>à la hauteur de vos <em>événements</em></h1>
-    <p class="ph-sub reveal d2">Cocktails dînatoires ou repas assis, nous composons des menus pour vos événements corporate et privés. Disponible en prestation intégrée ou de façon indépendante. À partir de 30 personnes.</p>
-    <div class="ph-ctas reveal d3">
-      <a href="#cocktails" class="btn btn-or">Cocktails dînatoires</a>
-      <a href="#repas-assis" class="btn btn-outline-w">Repas assis</a>
+
+<!-- ══════════════════════════════════════════════
+     HERO — PLEIN ÉCRAN
+══════════════════════════════════════════════ -->
+<div class="hero-traiteur">
+  <div class="hero-bg">
+    <img src="https://static.wixstatic.com/media/d3492f_18096f39f3d34bbe99af21ab624e769f~mv2.jpeg" alt="">
+    <div class="hero-gradient"></div>
+  </div>
+  <div class="container hero-content">
+    <div class="hero-label">Service traiteur · La Saison 26</div>
+    <h1 class="hero-h1">Une table<br>qui <em>raconte</em><br>votre histoire</h1>
+    <p class="hero-sub">Cocktails dînatoires ou repas assis — des menus pensés pour sublimer vos événements, où que vous soyez.</p>
+    <div class="hero-ctas" style="display:flex;flex-wrap:wrap;gap:.9rem;margin-bottom:2rem">
+      <a href="#format-tabs" class="btn btn-or">Découvrir les menus</a>
+      <a href="contact.html" class="btn btn-outline-w">Demander un devis</a>
+    </div>
+    <div class="hero-pills" style="padding-bottom:.5rem">
+      <div class="hero-pill"><span></span>Serveurs inclus</div>
+      <div class="hero-pill"><span></span>Soft drinks inclus</div>
+      <div class="hero-pill"><span></span>Dès 30 personnes</div>
+      <div class="hero-pill"><span></span>Prestation indépendante possible</div>
     </div>
   </div>
-  <div class="ph-deco"></div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span class="hero-scroll-label">Découvrir</span>
+  </div>
 </div>
 
-<!-- TOUJOURS INCLUS -->
+<!-- ══════════════════════════════════════════════
+     BANDE INCLUS
+══════════════════════════════════════════════ -->
+<div class="inclus-bande" style="margin-top:0">
+  <div class="container">
+    <div class="inclus-inner">
+      <div class="inclus-cell">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <div class="inclus-text"><strong>Serveurs</strong><span>Service professionnel inclus</span></div>
+      </div>
+      <div class="inclus-cell">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+        <div class="inclus-text"><strong>Soft drinks</strong><span>Eau, jus naturels, sodas</span></div>
+      </div>
+      <div class="inclus-cell">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <div class="inclus-text"><strong>Produits frais</strong><span>Préparés le Jour J</span></div>
+      </div>
+      <div class="inclus-cell">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="inclus-text"><strong>Tarifs dégressifs</strong><span>Dès 30 personnes</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     GALERIE MOSAÏQUE
+══════════════════════════════════════════════ -->
+<div class="galerie-mosaic reveal">
+  <div class="gm-item gm-1"><img src="https://static.wixstatic.com/media/d3492f_bdc3bde26d804c58a3e25d05c775dd3b~mv2.jpeg" alt="Traiteur Tera events"></div>
+  <div class="gm-item gm-2"><img src="https://static.wixstatic.com/media/d3492f_18096f39f3d34bbe99af21ab624e769f~mv2.jpeg" alt="Buffet Tera events"></div>
+  <div class="gm-item gm-3"><img src="https://static.wixstatic.com/media/d3492f_916f225447944d8c9aefa19961687143~mv2.jpg" alt="Cocktail dînatoire"></div>
+  <div class="gm-item gm-4"><img src="https://static.wixstatic.com/media/d3492f_07ee17c4cd6e42058e2f118a0903df62~mv2.jpeg" alt="Service traiteur"></div>
+  <div class="gm-item gm-5"><img src="https://static.wixstatic.com/media/d3492f_b856a892eb294f14b604aab4f6fac370~mv2.jpg" alt="Mets Tera events"></div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     MENUS — SÉLECTEUR PAR ONGLETS
+══════════════════════════════════════════════ -->
 <section>
   <div class="container">
-    <div style="text-align:center;margin-bottom:2.5rem" class="reveal">
-      <span class="eyebrow">Dans toutes nos formules</span>
-      <h2 style="font-size:clamp(2rem,3.5vw,3rem)">Toujours inclus</h2>
+    <div style="margin-bottom:3rem" class="reveal">
+      <span class="eyebrow">Nos menus</span>
+      <h2 style="font-size:clamp(2rem,3.5vw,3.2rem)">Choisissez votre<br>style de service</h2>
     </div>
-    <div class="inclus-strip reveal">
-      <div class="inclus-item">
-        <div class="inclus-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <p class="inclus-label">Serveurs inclus</p>
-        <p class="inclus-sub">Service professionnel</p>
+
+    <!-- ONGLETS -->
+    <div class="format-tabs reveal" id="format-tabs">
+      <div class="format-tab active" onclick="switchTab('cocktails',this)">
+        <div class="ft-eyebrow"><span class="ft-dot"></span>Format 01</div>
+        <h3 class="ft-title">Cocktails Dînatoires</h3>
+        <p class="ft-desc">Service debout, mets circulant en salle. Idéal pour réceptions, networking et soirées festives.</p>
+        <p class="ft-price">À partir de 10 500 F CFA<em>/ personne</em></p>
       </div>
-      <div class="inclus-item">
-        <div class="inclus-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
-        <p class="inclus-label">Soft drinks</p>
-        <p class="inclus-sub">Eau, jus, sodas</p>
-      </div>
-      <div class="inclus-item">
-        <div class="inclus-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-        <p class="inclus-label">Produits frais</p>
-        <p class="inclus-sub">Préparés le jour J</p>
-      </div>
-      <div class="inclus-item">
-        <div class="inclus-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <p class="inclus-label">Dès 30 personnes</p>
-        <p class="inclus-sub">Tarifs dégressifs au volume</p>
+      <div class="format-tab" onclick="switchTab('repas',this)">
+        <div class="ft-eyebrow"><span class="ft-dot"></span>Format 02</div>
+        <h3 class="ft-title">Repas Assis</h3>
+        <p class="ft-desc">Service à table structuré. Idéal pour galas, cérémonies, mariages et événements formels.</p>
+        <p class="ft-price">À partir de 19 000 F CFA<em>/ personne</em></p>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- GALERIE -->
-<section style="padding-top:0">
-  <div class="container">
-    <div class="galerie-traiteur reveal">
-      <div class="gt-item wide">
-        <img src="https://static.wixstatic.com/media/d3492f_18096f39f3d34bbe99af21ab624e769f~mv2.jpeg" alt="Traiteur Tera events">
-      </div>
-      <div class="gt-item">
-        <img src="https://static.wixstatic.com/media/d3492f_916f225447944d8c9aefa19961687143~mv2.jpg" alt="Buffet Tera events">
-      </div>
-      <div class="gt-item">
-        <img src="https://static.wixstatic.com/media/d3492f_8bb7d3b4ccbc45bea638f52490eb5fa7~mv2.jpeg" alt="Cocktail dînatoire Tera events">
-      </div>
-      <div class="gt-item">
-        <img src="https://static.wixstatic.com/media/d3492f_07ee17c4cd6e42058e2f118a0903df62~mv2.jpeg" alt="Service traiteur Tera events">
-      </div>
-      <div class="gt-item">
-        <img src="https://static.wixstatic.com/media/d3492f_b856a892eb294f14b604aab4f6fac370~mv2.jpg" alt="Mets Tera events">
+    <!-- ── COCKTAILS DÎNATOIRES ── -->
+    <div class="menus-section active" id="tab-cocktails">
+      <p style="font-size:.85rem;color:var(--gris);margin-bottom:2rem">Bières disponibles en option : <strong style="color:var(--b2)">+3 500 F CFA / personne</strong></p>
+      <div class="menu-editorial">
+
+        <!-- DÉCOUVERTE -->
+        <div class="me-card">
+          <div class="me-head">
+            <h3 class="me-name">Découverte</h3>
+            <p class="me-choix">8 à 10 choix par personne</p>
+          </div>
+          <div class="me-body">
+            <span class="me-cat">Canapés — 5 à 6 choix</span>
+            <ul class="me-list">
+              <li>Pastel Poisson ou Viande · Pastel Cheese ou Crispy</li>
+              <li>Nems Viande ou Poulet · Quiche Jambon</li>
+              <li>Quiche Viande ou Thon · Quiche aux Légumes</li>
+              <li>Samossa · Pizza Reina, du Chef ou Fish Pizza</li>
+              <li>Pizza Veggy · Black and White · BBQ Chicken</li>
+            </ul>
+            <span class="me-cat">Sandwish &amp; Burger — 1 à 2 choix</span>
+            <ul class="me-list">
+              <li>Smash Burger · Newyorkais · Hot Dog · Panini · Croc Mr</li>
+              <li>Mini Burger El Classico · Red Chicken · Black Crispy · Burger Babibel</li>
+            </ul>
+            <span class="me-cat">Desserts — 1 à 2 choix</span>
+            <ul class="me-list">
+              <li>Cake vanille ou chocolat · Déguê · Yahourt aux fruits</li>
+              <li>Brochettes de fruits · Mix madeleines &amp; muffins · Madeleine au citron</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ÉVÉNEMENT -->
+        <div class="me-card featured">
+          <div class="me-head">
+            <span class="me-badge">Le plus choisi</span>
+            <h3 class="me-name">Événement</h3>
+            <p class="me-choix">10 à 12 choix par personne</p>
+          </div>
+          <div class="me-body">
+            <span class="me-cat">Canapés — 3 à 5 choix</span>
+            <ul class="me-list">
+              <li>Quiche Viande, Thon ou Jambon · Quiche Lorraine</li>
+              <li>Pizza Veggy, Black and White, Hexagone, BBQ Chicken</li>
+              <li>Samossa · Feuilleté Viande, Thon ou Saucisse</li>
+            </ul>
+            <span class="me-cat">Grillades — 2 choix</span>
+            <ul class="me-list">
+              <li>Ailerons Panés · Pomme Surprise</li>
+              <li>Brochette Saucisse Poulet · Alloco · Claclo</li>
+              <li>Brochette Boulette Poulet Citronnelle · Porc Laqué Ananas</li>
+              <li>Brochette Mérou · Filet de Bœuf</li>
+            </ul>
+            <span class="me-cat">Sandwish &amp; Burger — 3 choix</span>
+            <ul class="me-list">
+              <li>Mini Burger El Classico · Red Chicken · Black Crispy · Burger Babibel</li>
+              <li>Smash Burger · Newyorkais · Hot Dog · Panini · Croc Mr</li>
+            </ul>
+            <span class="me-cat">Desserts — 2 choix</span>
+            <ul class="me-list">
+              <li>Cake vanille ou chocolat · Déguê · Yahourt aux fruits</li>
+              <li>Brochettes de fruits · Chouquettes · Crème brûlée · Flan</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- PRESTIGE -->
+        <div class="me-card">
+          <div class="me-head">
+            <h3 class="me-name">Prestige</h3>
+            <p class="me-choix">12 à 15 choix par personne</p>
+          </div>
+          <div class="me-body">
+            <span class="me-cat">Canapés — 4 à 6 choix</span>
+            <ul class="me-list">
+              <li>Samossa · Feuilleté Viande, Thon ou Saucisse · Quiche variées</li>
+              <li>Pizza Veggy, Black and White, BBQ Chicken</li>
+              <li>Tomate Cerise Mozza · Brochette Mozza Tomate Basilique</li>
+              <li>Brisque de Thon · Brisque PDT Fromage</li>
+            </ul>
+            <span class="me-cat">Grillades — 2 choix</span>
+            <ul class="me-list">
+              <li>Ailerons Panés · Pomme Surprise · Brochettes variées</li>
+              <li>Brochette Poulet Tandoori · Brochette de Gambas</li>
+            </ul>
+            <span class="me-cat">Sandwish &amp; Burger — 2 à 3 choix</span>
+            <ul class="me-list">
+              <li>Mini Burger Noir Saumon · Salmon Burger · Bao Poulet Crispy</li>
+              <li>Toast Saumon, Avocat Crevette · Tacos · Club Sandwich · Quesadilla</li>
+            </ul>
+            <span class="me-cat">Verrines — 2 choix <span class="me-note">(1 max. premium)</span></span>
+            <ul class="me-list">
+              <li>Vérine Macédoine · Mousseline · Salade César · Lasagne</li>
+              <li><em style="color:var(--or4)">Premium :</em> Exotique Mangue · Saumon Boursin · Gambas</li>
+            </ul>
+            <span class="me-cat">Desserts — 2 choix <span class="me-note">(1 max. premium)</span></span>
+            <ul class="me-list">
+              <li>Brochettes de fruits · Crème brûlée · Île Flottante · Brownie Oreo</li>
+              <li><em style="color:var(--or4)">Premium :</em> Tartelette Café · Tarte Citron · Vérine Chocolat · Panna Cotta</li>
+            </ul>
+          </div>
+        </div>
+
       </div>
     </div>
-  </div>
-</section>
 
-<!-- 2 FORMATS — avec prix à partir de -->
-<section class="section-pale">
-  <div class="container">
-    <div style="text-align:center;margin-bottom:3rem" class="reveal">
-      <span class="eyebrow">Nos formats</span>
-      <h2 style="font-size:clamp(2rem,3.5vw,3rem)">Choisissez votre style de service</h2>
-    </div>
-    <div class="type-selector reveal">
-      <div class="type-col">
-        <div class="type-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-        </div>
-        <span class="eyebrow">Format 01</span>
-        <h2 class="type-title">Cocktails<br>Dînatoires</h2>
-        <p class="type-desc">Service debout, mets en petites portions circulant en salle. Idéal pour réceptions, networking, soirées d'entreprise et célébrations festives. 8 à 15 choix par personne selon la formule.</p>
-        <p class="type-info">À partir de <strong>10 500 F CFA / personne</strong></p>
-        <div style="margin-top:1.5rem"><a href="#cocktails" class="btn btn-outline-b">Voir les menus ↓</a></div>
-      </div>
-      <div class="type-col">
-        <div class="type-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2"/><path d="M18 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
-        </div>
-        <span class="eyebrow">Format 02</span>
-        <h2 class="type-title">Repas<br>Assis</h2>
-        <p class="type-desc">Service à table, menu structuré en plusieurs temps. Idéal pour dîners de gala, cérémonies, mariages et événements formels. Apéritifs, entrées, plats chauds, garnitures et desserts.</p>
-        <p class="type-info">À partir de <strong>19 000 F CFA / personne</strong></p>
-        <div style="margin-top:1.5rem"><a href="#repas-assis" class="btn btn-outline-b">Voir les menus ↓</a></div>
-      </div>
-    </div>
-  </div>
-</section>
+    <!-- ── REPAS ASSIS ── -->
+    <div class="menus-section" id="tab-repas">
+      <div class="repas-grid">
 
-<!-- ===== COCKTAILS DÎNATOIRES ===== -->
-<section id="cocktails">
-  <div class="container">
-    <div style="margin-bottom:3.5rem" class="reveal">
-      <span class="eyebrow">Format 01</span>
-      <h2 style="font-size:clamp(2rem,3.5vw,3rem);margin-bottom:.8rem">Cocktails Dînatoires</h2>
-      <p style="font-size:.9rem;color:var(--gris);max-width:600px;line-height:1.75">Service debout. Bières en option : +3 500 F CFA / personne. Disponible à partir de 30 personnes.</p>
-    </div>
-    <div class="menus-grid">
+        <div class="rp-card">
+          <h3 class="rp-name">Rapide</h3>
+          <p class="rp-choix">6 services · Serveurs &amp; Soft drinks inclus</p>
+          <div class="rp-row"><span>Apéritifs</span><span>2 choix</span></div>
+          <div class="rp-row"><span>Entrées</span><span>2 choix</span></div>
+          <div class="rp-row"><span>Plats chauds</span><span>2 choix</span></div>
+          <div class="rp-row"><span>Garnitures</span><span>2 choix</span></div>
+        </div>
 
-      <!-- DÉCOUVERTE -->
-      <div class="menu-card reveal">
-        <div class="menu-head">
-          <h3 class="menu-name">Découverte</h3>
-          <p class="menu-choix">8 à 10 choix par personne</p>
+        <div class="rp-card featured">
+          <span class="me-badge">Recommandé</span>
+          <h3 class="rp-name">L'Essentiel</h3>
+          <p class="rp-choix">8 services · Serveurs &amp; Soft drinks inclus</p>
+          <div class="rp-row"><span>Apéritifs</span><span>4 choix</span></div>
+          <div class="rp-row"><span>Entrées</span><span>2 choix</span></div>
+          <div class="rp-row"><span>Plats chauds</span><span>3 choix</span></div>
+          <div class="rp-row"><span>Garnitures</span><span>3 choix</span></div>
+          <div class="rp-row"><span>Dessert</span><span>1 choix</span></div>
         </div>
-        <div class="menu-body">
-          <p class="menu-include">Serveurs &amp; Soft drinks inclus</p>
-          <span class="menu-section-title">Canapés — 5 à 6 choix</span>
-          <ul class="menu-items">
-            <li>Pastel Poisson ou Viande · Pastel Cheese ou Crispy</li>
-            <li>Nems Viande ou Poulet · Quiche Jambon · Quiche Viande ou Thon</li>
-            <li>Samossa Viande ou Poulet · Pizza Reina, du Chef ou Fish Pizza</li>
-            <li>Pizza Veggy · Black and White · BBQ Chicken</li>
-          </ul>
-          <span class="menu-section-title">Sandwish &amp; Burger — 1 à 2 choix</span>
-          <ul class="menu-items">
-            <li>Smash Burger · Burger Newyorkais · Hot Dog · Panini · Croc Mr</li>
-            <li>Mini Burger El Classico · Red Chicken Burger · Black Crispy · Burger Babibel</li>
-          </ul>
-          <span class="menu-section-title">Desserts — 1 à 2 choix</span>
-          <ul class="menu-items">
-            <li>Cake vanille ou chocolat · Déguê · Yahourt aux fruits</li>
-            <li>Brochettes de fruits · Mix madeleines &amp; muffins · Madeleine au citron</li>
-          </ul>
+
+        <div class="rp-card">
+          <h3 class="rp-name">Prestige</h3>
+          <p class="rp-choix">10 services · Serveurs &amp; Soft drinks inclus</p>
+          <div class="rp-row"><span>Apéritifs</span><span>4 choix</span></div>
+          <div class="rp-row"><span>Entrées</span><span>2 choix</span></div>
+          <div class="rp-row"><span>Plats chauds</span><span>4 choix</span></div>
+          <div class="rp-row"><span>Garnitures</span><span>4 choix</span></div>
+          <div class="rp-row"><span>Desserts</span><span>2 choix</span></div>
         </div>
+
       </div>
 
-      <!-- ÉVÉNEMENT -->
-      <div class="menu-card star reveal d2">
-        <div class="menu-head">
-          <span class="menu-badge">Le plus choisi</span>
-          <h3 class="menu-name">Événement</h3>
-          <p class="menu-choix">10 à 12 choix par personne</p>
+      <!-- GALA -->
+      <div class="gala-block">
+        <div class="gala-header">
+          <div class="gala-left">
+            <div class="gala-badge">Prestige ultime</div>
+            <h3 class="gala-name">Gala</h3>
+            <p class="gala-sub">L'excellence pour vos soirées d'exception · 9 services</p>
+          </div>
+          <a href="contact.html" class="btn btn-or">Demander un devis traiteur</a>
         </div>
-        <div class="menu-body">
-          <p class="menu-include">Serveurs &amp; Soft drinks inclus</p>
-          <span class="menu-section-title">Canapés — 3 à 5 choix</span>
-          <ul class="menu-items">
-            <li>Quiche Viande, Thon ou Jambon · Quiche Lorraine</li>
-            <li>Pizza Veggy, Black and White, Hexagone, BBQ Chicken</li>
-            <li>Samossa Viande ou Poulet · Feuilleté Viande, Thon ou Saucisse</li>
-          </ul>
-          <span class="menu-section-title">Grillades — 2 choix</span>
-          <ul class="menu-items">
-            <li>Ailerons Panés · Pomme Surprise · Brochette Saucisse Poulet</li>
-            <li>Brochette d'Alloco · Brochette de Claclo · Brochette Boulette Poulet Citronnelle</li>
-            <li>Brochette Porc Laqué Ananas · Brochette Mérou · Brochette Filet de Bœuf</li>
-          </ul>
-          <span class="menu-section-title">Sandwish &amp; Burger — 3 choix</span>
-          <ul class="menu-items">
-            <li>Mini Burger El Classico · Red Chicken · Black Crispy · Burger Babibel</li>
-            <li>Smash Burger · Newyorkais · Hot Dog · Panini · Croc Mr</li>
-          </ul>
-          <span class="menu-section-title">Desserts — 2 choix</span>
-          <ul class="menu-items">
-            <li>Cake vanille ou chocolat · Déguê · Yahourt aux fruits · Brochettes de fruits</li>
-            <li>Madeleine au citron · Chouquettes · Crème brûlée · Flan</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- PRESTIGE -->
-      <div class="menu-card reveal d3">
-        <div class="menu-head">
-          <h3 class="menu-name">Prestige</h3>
-          <p class="menu-choix">12 à 15 choix par personne</p>
-        </div>
-        <div class="menu-body">
-          <p class="menu-include">Serveurs &amp; Soft drinks inclus</p>
-          <span class="menu-section-title">Canapés — 4 à 6 choix</span>
-          <ul class="menu-items">
-            <li>Samossa · Feuilleté Viande, Thon ou Saucisse · Quiche variées · Quiche Lorraine</li>
-            <li>Pizza Veggy, Black and White, BBQ Chicken · Tomate Cerise Mozza</li>
-            <li>Brochette Mozza Tomate Basilique · Brisque de Thon · Brisque PDT Fromage</li>
-          </ul>
-          <span class="menu-section-title">Grillades — 2 choix</span>
-          <ul class="menu-items">
-            <li>Ailerons Panés · Pomme Surprise · Brochettes variées (Alloco, Claclo, Mérou, Bœuf)</li>
-            <li>Brochette Poulet Tandoori · Brochette de Gambas</li>
-          </ul>
-          <span class="menu-section-title">Sandwish &amp; Burger — 2 à 3 choix</span>
-          <ul class="menu-items">
-            <li>Mini Burger Noir Saumon · Salmon Burger · Bao Poulet Crispy · Wrap Poulet ou Viande</li>
-            <li>Toast Saumon, Avocat Crevette · Tacos · Galette Sarazin · Club Sandwich · Quesadilla</li>
-          </ul>
-          <span class="menu-section-title">Verrines — 2 choix <em style="font-size:.65rem;font-style:normal">(1 max. premium)</em></span>
-          <ul class="menu-items">
-            <li>Vérine Macédoine · Mousseline · Salade César · Hachis Parmentier · Lasagne</li>
-            <li><em>Premium :</em> Vérine Exotique Mangue · Saumon Boursin · Gambas</li>
-          </ul>
-          <span class="menu-section-title">Desserts — 2 choix <em style="font-size:.65rem;font-style:normal">(1 max. premium)</em></span>
-          <ul class="menu-items">
-            <li>Brochettes de fruits · Crème brûlée · Île Flottante · Brownie Oreo</li>
-            <li><em>Premium :</em> Tartelette Café · Tarte Citron · Vérine Chocolat · Mousse Chocolat · Panna Cotta</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ===== REPAS ASSIS ===== -->
-<section id="repas-assis" class="section-pale">
-  <div class="container">
-    <div style="margin-bottom:3.5rem" class="reveal">
-      <span class="eyebrow">Format 02</span>
-      <h2 style="font-size:clamp(2rem,3.5vw,3rem);margin-bottom:.8rem">Repas Assis</h2>
-      <p style="font-size:.9rem;color:var(--gris);max-width:600px;line-height:1.75">Service à table, menu structuré en plusieurs temps. Serveurs &amp; soft drinks inclus. À partir de 30 personnes.</p>
-    </div>
-    <div class="menus-grid">
-
-      <!-- RAPIDE -->
-      <div class="menu-card reveal">
-        <div class="menu-head">
-          <h3 class="menu-name">Rapide</h3>
-          <p class="menu-choix">6 services</p>
-        </div>
-        <div class="menu-body">
-          <p class="menu-include">Serveurs &amp; Soft drinks inclus</p>
-          <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem">
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Apéritifs</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Entrées</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Plats chauds</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0"><span style="color:var(--gris)">Garnitures</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
+        <div class="gala-body">
+          <div>
+            <span class="gala-col-title">Composition</span>
+            <div class="gala-services">
+              <div class="gala-svc-row"><span>Apéritifs signature</span><span>6 choix</span></div>
+              <div class="gala-svc-row"><span>Entrée froide ou chaude</span><span>1 choix</span></div>
+              <div class="gala-svc-row"><span>Plats chauds</span><span>2 choix</span></div>
+              <div class="gala-svc-row"><span>Garnitures</span><span>2 choix</span></div>
+              <div class="gala-svc-row"><span>Dessert signature</span><span>1 choix</span></div>
+            </div>
+          </div>
+          <div>
+            <span class="gala-col-title">Apéritifs signature</span>
+            <ul class="gala-aperitifs">
+              <li>Cromesquis d'igname au cœur fondant</li>
+              <li>Tempura de crevettes au nectar d'ananas</li>
+              <li>Brochette de poulet en croûte de cacahuète</li>
+              <li>Mini burger de kefta</li>
+            </ul>
           </div>
         </div>
       </div>
 
-      <!-- L'ESSENTIEL -->
-      <div class="menu-card star reveal d2">
-        <div class="menu-head">
-          <span class="menu-badge">Recommandé</span>
-          <h3 class="menu-name">L'Essentiel</h3>
-          <p class="menu-choix">8 services</p>
-        </div>
-        <div class="menu-body">
-          <p class="menu-include">Serveurs &amp; Soft drinks inclus</p>
-          <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem">
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Apéritifs</span><span style="color:var(--b2);font-weight:500">4 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Entrées</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Plats chauds</span><span style="color:var(--b2);font-weight:500">3 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Garnitures</span><span style="color:var(--b2);font-weight:500">3 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0"><span style="color:var(--gris)">Dessert</span><span style="color:var(--b2);font-weight:500">1 choix</span></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- PRESTIGE ASSIS -->
-      <div class="menu-card reveal d3">
-        <div class="menu-head">
-          <h3 class="menu-name">Prestige</h3>
-          <p class="menu-choix">10 services</p>
-        </div>
-        <div class="menu-body">
-          <p class="menu-include">Serveurs &amp; Soft drinks inclus</p>
-          <div style="display:flex;flex-direction:column;gap:.4rem;margin-top:.5rem">
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Apéritifs</span><span style="color:var(--b2);font-weight:500">4 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Entrées</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Plats chauds</span><span style="color:var(--b2);font-weight:500">4 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Garnitures</span><span style="color:var(--b2);font-weight:500">4 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.85rem;padding:.4rem 0"><span style="color:var(--gris)">Desserts</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- GALA -->
-    <div style="margin-top:1.5rem;border:1px solid var(--or);border-radius:var(--r3);overflow:hidden" class="reveal">
-      <div style="background:rgba(196,145,110,.08);padding:1.8rem 2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;border-bottom:1px solid var(--bor-or)">
-        <div>
-          <span class="menu-badge" style="display:inline-block;margin-bottom:.6rem">Prestige ultime</span>
-          <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--b2);line-height:1">Gala</h3>
-          <p style="font-size:.78rem;color:var(--gris2);margin-top:.3rem">L'excellence pour vos soirées de prestige · 9 services</p>
-        </div>
-        <a href="contact.html" class="btn btn-or">Demander un devis traiteur</a>
-      </div>
-      <div style="padding:1.8rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem">
-        <div>
-          <span style="font-size:.62rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:.7rem">Composition</span>
-          <div style="display:flex;flex-direction:column;gap:.4rem">
-            <div style="display:flex;justify-content:space-between;font-size:.84rem;padding:.35rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Apéritifs signature</span><span style="color:var(--b2);font-weight:500">6 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.84rem;padding:.35rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Entrée froide ou chaude</span><span style="color:var(--b2);font-weight:500">1 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.84rem;padding:.35rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Plats chauds</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.84rem;padding:.35rem 0;border-bottom:1px solid var(--bor-or)"><span style="color:var(--gris)">Garnitures</span><span style="color:var(--b2);font-weight:500">2 choix</span></div>
-            <div style="display:flex;justify-content:space-between;font-size:.84rem;padding:.35rem 0"><span style="color:var(--gris)">Dessert signature</span><span style="color:var(--b2);font-weight:500">1 choix</span></div>
-          </div>
-        </div>
-        <div>
-          <span style="font-size:.62rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--or);display:block;margin-bottom:.7rem">Apéritifs signature</span>
-          <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem">
-            <li style="font-size:.82rem;color:var(--gris);padding-left:.9rem;position:relative"><span style="position:absolute;left:0;color:var(--or)">·</span>Cromesquis d'igname au cœur fondant</li>
-            <li style="font-size:.82rem;color:var(--gris);padding-left:.9rem;position:relative"><span style="position:absolute;left:0;color:var(--or)">·</span>Tempura de crevettes au nectar d'ananas</li>
-            <li style="font-size:.82rem;color:var(--gris);padding-left:.9rem;position:relative"><span style="position:absolute;left:0;color:var(--or)">·</span>Brochette de poulet en croûte de cacahuète</li>
-            <li style="font-size:.82rem;color:var(--gris);padding-left:.9rem;position:relative"><span style="position:absolute;left:0;color:var(--or)">·</span>Mini burger de kefta</li>
-          </ul>
-        </div>
+      <div class="chef-note">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C4916E" stroke-width="1.3" style="flex-shrink:0;margin-top:2px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <p><strong>Menus du Chef disponibles sur demande</strong> — Nos repas assis incluent un large choix de plats ivoiriens et internationaux : Tchiep, Yassa, Attiéké, Kédjénou, Couscous marocain, Brochettes de gambas… Contactez-nous pour recevoir la carte complète.</p>
       </div>
     </div>
 
-    <div style="margin-top:1.5rem;padding:1.3rem 2rem;border-left:3px solid var(--or);background:rgba(196,145,110,.05);border-radius:0 var(--r2) var(--r2) 0" class="reveal">
-      <p style="font-size:.85rem;color:var(--gris);line-height:1.7"><strong style="color:var(--b2)">Menus du Chef disponibles sur demande</strong> — Nos menus assis incluent un large choix de plats ivoiriens et internationaux : Tchiep, Yassa, Attiéké, Kédjénou, Couscous marocain, Brochettes de gambas… Contactez-nous pour recevoir la carte complète.</p>
-    </div>
   </div>
 </section>
 
-<!-- PRESTATION INDÉPENDANTE -->
-<section>
+<!-- ══════════════════════════════════════════════
+     PRESTATION INDÉPENDANTE
+══════════════════════════════════════════════ -->
+<section class="section-pale" style="padding-top:0">
   <div class="container">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center" class="reveal">
-      <div>
+    <div class="indep-block reveal">
+      <div class="indep-text">
         <span class="eyebrow">Service indépendant</span>
-        <h2 style="font-size:clamp(1.8rem,3vw,2.8rem);margin-bottom:1.2rem">Pas d'événement<br>organisé par nous ?<br><em style="color:var(--or4);font-style:italic">Pas de problème.</em></h2>
-        <p style="font-size:.9rem;color:var(--gris);line-height:1.75;margin-bottom:1.5rem">Notre service traiteur est disponible de façon totalement indépendante. Vous gérez votre événement et nous nous occupons uniquement du volet restauration.</p>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem">
-          <li style="display:flex;gap:.9rem;align-items:flex-start;font-size:.88rem;color:var(--gris)"><span style="width:5px;height:5px;background:var(--or);border-radius:50%;flex-shrink:0;margin-top:7px"></span>Livraison et installation sur votre lieu</li>
-          <li style="display:flex;gap:.9rem;align-items:flex-start;font-size:.88rem;color:var(--gris)"><span style="width:5px;height:5px;background:var(--or);border-radius:50%;flex-shrink:0;margin-top:7px"></span>Serveurs professionnels inclus</li>
-          <li style="display:flex;gap:.9rem;align-items:flex-start;font-size:.88rem;color:var(--gris)"><span style="width:5px;height:5px;background:var(--or);border-radius:50%;flex-shrink:0;margin-top:7px"></span>Tout le matériel de service fourni</li>
-          <li style="display:flex;gap:.9rem;align-items:flex-start;font-size:.88rem;color:var(--gris)"><span style="width:5px;height:5px;background:var(--or);border-radius:50%;flex-shrink:0;margin-top:7px"></span>À partir de 30 personnes</li>
+        <h2 style="font-size:clamp(1.8rem,3vw,2.8rem);margin-bottom:1.2rem">Pas d'événement organisé par nous ?<br><em style="color:var(--or4);font-style:italic">Pas de problème.</em></h2>
+        <p style="font-size:.9rem;color:var(--gris);line-height:1.75">Notre service traiteur est disponible de façon totalement indépendante. Vous gérez votre événement — nous nous occupons de la restauration.</p>
+        <ul class="indep-list">
+          <li>Livraison et installation sur votre lieu</li>
+          <li>Serveurs professionnels inclus</li>
+          <li>Tout le matériel de service fourni</li>
+          <li>À partir de 30 personnes</li>
         </ul>
-        
       </div>
-      <div style="border-radius:var(--r3);overflow:hidden;height:380px">
-        <img src="https://static.wixstatic.com/media/d3492f_bdc3bde26d804c58a3e25d05c775dd3b~mv2.jpeg" alt="Service traiteur indépendant Tera events" style="width:100%;height:100%;object-fit:cover;display:block">
+      <div class="indep-img">
+        <img src="https://static.wixstatic.com/media/d3492f_8bb7d3b4ccbc45bea638f52490eb5fa7~mv2.jpeg" alt="Prestation traiteur indépendante Tera events">
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA FINAL -->
+<!-- ══════════════════════════════════════════════
+     CTA FINAL — UN SEUL
+══════════════════════════════════════════════ -->
 <section>
   <div class="container">
-    <div class="cta-band reveal">
-      <span class="eyebrow-w" style="display:block;margin-bottom:.8rem">Réservez votre service</span>
-      <h2>Un menu à la hauteur<br>de votre <em style="color:var(--or3);font-style:italic">événement</em></h2>
-      <p>Dites-nous votre nombre de convives, la date et le format souhaité — nous vous envoyons une proposition sous 48h.</p>
+    <div class="cta-finale reveal">
+      <h2>Un service traiteur<br>à la hauteur de<br>votre <em>événement</em></h2>
+      <p>Nombre de convives, format, date — partagez-nous les détails et nous vous revenons sous 48h avec une proposition sur mesure.</p>
       <div class="cta-btns">
         <a href="contact.html" class="btn btn-or">Demander un devis traiteur</a>
-        <a href="nos-realisations.html" class="btn btn-outline-w">Voir nos réalisations</a>
+        <a href="tel:+2250566221010" class="btn btn-outline-w">+225 05 66 22 10 10</a>
       </div>
     </div>
   </div>
@@ -590,37 +795,42 @@ footer{background:var(--b1);color:rgba(255,255,255,0.7);padding:4.5rem 0 2rem}
   </div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+</body>
+</html>
+<script>
+// Nav
 var _nav = document.getElementById('nav');
 if(_nav){
   window.addEventListener('scroll', function(){ _nav.classList.toggle('scrolled', window.scrollY > 60); });
   var _tog = document.getElementById('nav-toggle');
   if(_tog) _tog.addEventListener('click', function(){ _nav.classList.toggle('open'); });
-  var _links = _nav.querySelectorAll('.nav-links a');
-  _links.forEach(function(link){
-    link.addEventListener('click', function(){ _nav.classList.remove('open'); });
-  });
-  document.addEventListener('click', function(e){
-    if(_nav.classList.contains('open') && !_nav.contains(e.target)) _nav.classList.remove('open');
-  });
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape') _nav.classList.remove('open');
-  });
+  _nav.querySelectorAll('.nav-links a').forEach(function(l){ l.addEventListener('click', function(){ _nav.classList.remove('open'); }); });
+  document.addEventListener('click', function(e){ if(_nav.classList.contains('open') && !_nav.contains(e.target)) _nav.classList.remove('open'); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') _nav.classList.remove('open'); });
 }
+
+// Tab switcher
+function switchTab(id, el){
+  document.querySelectorAll('.format-tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.menus-section').forEach(function(s){ s.classList.remove('active'); });
+  el.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+// Reveals
 document.body.classList.add('js-ready');
 function activateReveals(){
   var els = document.querySelectorAll('.reveal');
-  els.forEach(function(el){
-    var r = el.getBoundingClientRect();
-    if(r.top < window.innerHeight + 120) el.classList.add('in');
-  });
+  els.forEach(function(el){ var r=el.getBoundingClientRect(); if(r.top < window.innerHeight+120) el.classList.add('in'); });
   if(window.IntersectionObserver){
-    var ro = new IntersectionObserver(function(entries){
-      entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); });
-    }, {threshold:0, rootMargin:'80px'});
+    var ro = new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('in'); }); },{threshold:0,rootMargin:'80px'});
     els.forEach(function(el){ ro.observe(el); });
-  
+  }
+  setTimeout(function(){ els.forEach(function(el){ el.classList.add('in'); }); }, 800);
 }
+if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',activateReveals); } else { activateReveals(); }
 </script>
+
 </body>
 </html>
